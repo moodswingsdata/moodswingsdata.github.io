@@ -6,7 +6,7 @@ This site is like mtgjson but for Mark Rosewater's game [Mood Swings](https://ma
 
 - [All cards](/msw/cards.yaml)
 - Printings
-  - [Edition 1 - MSW](/msw/printings.yaml)
+  - Edition 1 (MSW) [visual spoiler](/msw/review.html), [data.yaml](/msw/printings.yaml)
 
 ## Caveats
 
