@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Feelings Parser Tests</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicons/favicon-16x16.png">
+  <link rel="manifest" href="favicons/site.webmanifest">
+  <style>
+    body { font-family: monospace; background: #1a1a2e; color: #e0e0e0; padding: 2rem; }
+    .pass { color: #55c07a; }
+    .fail { color: #e05555; }
+    .summary { margin-top: 1rem; padding: 1rem; border-top: 1px solid #3a3a5c; font-size: 1.1rem; }
+    pre { white-space: pre-wrap; margin: 0.25rem 0 0.5rem 1rem; color: #9090a0; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+  <h1>Parser Tests</h1>
+  <div id="output"></div>
+  <script type="module">
+    import { parseQuery, KEYWORD_MAP, PRINTING_FIELDS, NUMERIC_FIELDS, DIRECTIVE_FIELDS } from "./parser.js";
+    import { initSearch, executeSearch, getPrintingsForCard } from "./search.js";
+
+    const output = document.getElementById("output");
+    let passed = 0;
+    let failed = 0;
+
+    function assert(condition, message, detail) {
+      if (condition) {
+        passed++;
+        output.innerHTML += `<div class="pass">✓ ${message}</div>`;
+      } else {
+        failed++;
+        output.innerHTML += `<div class="fail">✗ ${message}</div>`;
+        if (detail) output.innerHTML += `<pre>${escapeHtml(detail)}</pre>`;
+      }
+    }
+
+    function assertEq(actual, expected, message) {
+      const pass = JSON.stringify(actual) === JSON.stringify(expected);
+      assert(pass, message, pass ? null : `Expected: ${JSON.stringify(expected)}\nActual:   ${JSON.stringify(actual)}`);
+    }
+
+    function escapeHtml(s) { return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+    // --- Parser tests ---
+
+    // Basic bare word (name search)
+    {
+      const { ast, errors } = parseQuery("love");
+      assertEq(ast.groups.length, 1, "bare word: one group");
+      assertEq(ast.groups[0].fragments.length, 1, "bare word: one fragment");
+      const f = ast.groups[0].fragments[0];
+      assertEq(f.field, "name", "bare word: field is name");
+      assertEq(f.value, "love", "bare word: value is 'love'");
+      assertEq(f.negated, false, "bare word: not negated");
+    }
+
+    // Keyword:value
+    {
+      const { ast } = parseQuery("c:white");
+      const f = ast.groups[0].fragments[0];
+      assertEq(f.field, "color", "keyword c resolves to color");
+      assertEq(f.operator, ":", "operator is colon");
+      assertEq(f.value, "white", "value is white");
+    }
+
+    // Keyword=value (exact)
+    {
+      const { ast } = parseQuery("color=White");
+      const f = ast.groups[0].fragments[0];
+      assertEq(f.field, "color", "color= resolves field");
+      assertEq(f.operator, "=", "operator is equals");
+      assertEq(f.value, "White", "value preserved");
+    }
+
+    // Numeric operators
+    {
+      const { ast } = parseQuery("dval>5");
+      const f = ast.groups[0].fragments[0];
+      assertEq(f.field, "dice_value", "dval resolves to dice_value");
+      assertEq(f.operator, ">", "operator is >");
+      assertEq(f.value, "5", "value is 5");
+    }
+
+    {
+      const { ast } = parseQuery("dval>=3");
+      assertEq(ast.groups[0].fragments[0].operator, ">=", "operator >= works");
+    }
+
+    {
+      const { ast } = parseQuery("dval=>3");
+      assertEq(ast.groups[0].fragments[0].operator, ">=", "operator => works as >=");
+    }
+
+    {
+      const { ast } = parseQuery("cn<=10");
+      assertEq(ast.groups[0].fragments[0].operator, "<=", "operator <= works");
+    }
+
+    {
+      const { ast } = parseQuery("cn=<10");
+      assertEq(ast.groups[0].fragments[0].operator, "<=", "operator =< works as <=");
+    }
+
+    // Quoted values
+    {
+      const { ast } = parseQuery('name:"Hurt Feelings"');
+      const f = ast.groups[0].fragments[0];
+      assertEq(f.value, "Hurt Feelings", "quoted value preserves spaces");
+      assertEq(f.valueType, "quoted", "valueType is quoted");
+    }
+
+    // Regex values
+    {
+      const { ast } = parseQuery("a:/sper$/");
+      const f = ast.groups[0].fragments[0];
+      assertEq(f.field, "artist", "a resolves to artist");
+      assertEq(f.value, "sper$", "regex value extracted without slashes");
+      assertEq(f.valueType, "regex", "valueType is regex");
+    }
+
+    // Negation
+    {
+      const { ast } = parseQuery("-c:red");
+      const f = ast.groups[0].fragments[0];
+      assertEq(f.negated, true, "negation detected");
+      assertEq(f.field, "color", "negated field correct");
+      assertEq(f.value, "red", "negated value correct");
+    }
+
+    // Multiple AND fragments
+    {
+      const { ast } = parseQuery("r:common c:white");
+      assertEq(ast.groups.length, 1, "AND: one group");
+      assertEq(ast.groups[0].fragments.length, 2, "AND: two fragments");
+      assertEq(ast.groups[0].fragments[0].field, "rarity", "AND: first is rarity");
+      assertEq(ast.groups[0].fragments[1].field, "color", "AND: second is color");
+    }
+
+    // OR groups
+    {
+      const { ast } = parseQuery("c:white or c:blue");
+      assertEq(ast.groups.length, 2, "OR: two groups");
+      assertEq(ast.groups[0].fragments[0].value, "white", "OR: first group value");
+      assertEq(ast.groups[1].fragments[0].value, "blue", "OR: second group value");
+    }
+
+    // Complex: AND within OR
+    {
+      const { ast } = parseQuery("c:white r:common or c:blue r:rare");
+      assertEq(ast.groups.length, 2, "complex OR: two groups");
+      assertEq(ast.groups[0].fragments.length, 2, "complex OR: first group has 2 frags");
+      assertEq(ast.groups[1].fragments.length, 2, "complex OR: second group has 2 frags");
+    }
+
+    // Directives
+    {
+      const { ast } = parseQuery("love as:printings sort:name");
+      const frags = ast.groups[0].fragments;
+      const directives = frags.filter(f => DIRECTIVE_FIELDS.has(f.field));
+      assertEq(directives.length, 2, "directives parsed");
+      assertEq(directives[0].field, "as", "as directive found");
+      assertEq(directives[0].value, "printings", "as value correct");
+      assertEq(directives[1].field, "sort", "sort directive found");
+    }
+
+    // Unknown keyword
+    {
+      const { ast, errors } = parseQuery("xyz:foo");
+      assertEq(ast.groups[0].fragments[0].field, "name", "unknown keyword falls back to name");
+      assert(errors.length > 0, "unknown keyword produces error");
+    }
+
+    // All keyword aliases resolve
+    {
+      const aliases = Object.keys(KEYWORD_MAP);
+      let allResolve = true;
+      for (const alias of aliases) {
+        if (!KEYWORD_MAP[alias]) allResolve = false;
+      }
+      assert(allResolve, "all keyword aliases resolve to a field");
+    }
+
+    // Empty query
+    {
+      const { ast, errors } = parseQuery("");
+      assertEq(ast.groups.length, 0, "empty query: no groups");
+      assertEq(errors.length, 0, "empty query: no errors");
+    }
+
+    // Bare quoted string (name search)
+    {
+      const { ast } = parseQuery('"Hurt Feelings"');
+      const f = ast.groups[0].fragments[0];
+      assertEq(f.field, "name", "bare quoted string: field is name");
+      assertEq(f.value, "Hurt Feelings", "bare quoted string: value correct");
+    }
+
+    // --- Search engine tests ---
+    // Load test data
+    const cardsRes = await fetch("data/cards.json");
+    const printingsRes = await fetch("data/printings.json");
+    const cardsData = await cardsRes.json();
+    const printingsData = await printingsRes.json();
+    initSearch(cardsData, printingsData);
+
+    // Basic name search
+    {
+      const { ast } = parseQuery("Altruism");
+      const { results } = executeSearch(ast);
+      assert(results.length >= 1, "search 'Altruism': at least 1 result");
+      assertEq(results[0].card.name, "Altruism", "search 'Altruism': correct card");
+    }
+
+    // Color search (partial)
+    {
+      const { ast } = parseQuery("c:wh");
+      const { results } = executeSearch(ast);
+      assert(results.length > 0, "search 'c:wh': has results");
+      assert(results.every(r => r.card.color === "White"), "search 'c:wh': all results are White");
+    }
+
+    // Rarity search
+    {
+      const { ast } = parseQuery("r:common");
+      const { results } = executeSearch(ast);
+      assert(results.length > 0, "search 'r:common': has results");
+      assert(results.every(r => r.printing.rarity === "Common"), "search 'r:common': all Common");
+    }
+
+    // AND: color + rarity
+    {
+      const { ast } = parseQuery("c:white r:common");
+      const { results } = executeSearch(ast);
+      assert(results.length > 0, "search 'c:white r:common': has results");
+      assert(results.every(r => r.card.color === "White" && r.printing.rarity === "Common"),
+        "search 'c:white r:common': all white and common");
+    }
+
+    // Negation
+    {
+      const { ast } = parseQuery("-c:white");
+      const { results } = executeSearch(ast);
+      assert(results.length > 0, "search '-c:white': has results");
+      assert(results.every(r => r.card.color !== "White"), "search '-c:white': no white cards");
+    }
+
+    // Numeric: dice_value > 5
+    {
+      const { ast } = parseQuery("dval>5");
+      const { results } = executeSearch(ast);
+      assert(results.length > 0, "search 'dval>5': has results");
+      assert(results.every(r => r.card.dice_value > 5), "search 'dval>5': all dice_value > 5");
+    }
+
+    // OR: color white or blue
+    {
+      const { ast } = parseQuery("c:white or c:blue");
+      const { results } = executeSearch(ast);
+      assert(results.length > 0, "search 'c:white or c:blue': has results");
+      assert(results.every(r => r.card.color === "White" || r.card.color === "Blue"),
+        "search 'c:white or c:blue': all white or blue");
+    }
+
+    // Sort
+    {
+      const { ast } = parseQuery("c:red sort:dice_value");
+      const { results } = executeSearch(ast);
+      assert(results.length > 1, "search sorted: has multiple results");
+      let sorted = true;
+      for (let i = 1; i < results.length; i++) {
+        if (results[i].card.dice_value < results[i-1].card.dice_value) sorted = false;
+      }
+      assert(sorted, "search sorted: results in ascending dice_value order");
+    }
+
+    // Sort reverse
+    {
+      const { ast } = parseQuery("c:red sort:-dice_value");
+      const { results } = executeSearch(ast);
+      let sorted = true;
+      for (let i = 1; i < results.length; i++) {
+        if (results[i].card.dice_value > results[i-1].card.dice_value) sorted = false;
+      }
+      assert(sorted, "search sort reverse: results in descending dice_value order");
+    }
+
+    // as:text (doesn't affect result count, just directives)
+    {
+      const { ast } = parseQuery("c:white as:text");
+      const { results, directives } = executeSearch(ast);
+      assertEq(directives.as, "text", "as:text directive parsed");
+      assert(results.length > 0, "as:text: still has results");
+    }
+
+    // Set search
+    {
+      const { ast } = parseQuery("set:MSW");
+      const { results } = executeSearch(ast);
+      assert(results.length > 0, "search 'set:MSW': has results");
+      assert(results.every(r => r.printing.set_code === "MSW"), "search 'set:MSW': all from MSW");
+    }
+
+    // Rules text search with tilde
+    {
+      const { ast } = parseQuery('rul:"Altruism is worth"');
+      const { results } = executeSearch(ast);
+      assert(results.some(r => r.card.name === "Altruism"), "rul search: finds Altruism");
+    }
+
+    // Regex artist search
+    {
+      const { ast } = parseQuery("a:/lyon$/");
+      const { results } = executeSearch(ast);
+      assert(results.length > 0, "regex artist search: has results");
+      assert(results.some(r => r.printing._artist_str.toLowerCase().endsWith("lyon")),
+        "regex artist search: matches artist ending in 'lyon'");
+    }
+
+    // --- Summary ---
+    output.innerHTML += `<div class="summary ${failed ? 'fail' : 'pass'}">${passed} passed, ${failed} failed</div>`;
+  </script>
+</body>
+</html>

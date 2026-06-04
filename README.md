@@ -2,11 +2,15 @@
 
 This site is like mtgjson but for Mark Rosewater's game [Mood Swings](https://magic.wizards.com/en/news/feature/mood-swings-extended-rules).
 
-## Available editions
+## Search engine
 
-- [All cards](/msw/cards.yaml)
+[Feelings](/feelings) is a search engine for Mood Swings cards built on this data.
+
+## Available data
+
+- All [cards.yaml](/msw/cards.yaml) • [cards.json](/feelings/data/cards.json)
 - Printings
-  - Edition 1 (MSW) [visual spoiler](/msw/review.html), [data.yaml](/msw/printings.yaml)
+  - Edition 1 (MSW) [printings.yaml](/msw/printings.yaml) • [printings.json](/feelings/data/printings.json)
 
 ## Caveats
 

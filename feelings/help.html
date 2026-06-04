@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feelings — Query Language Reference</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicons/favicon-16x16.png">
+  <link rel="manifest" href="favicons/site.webmanifest">
+  <style>
+    .help-content {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .help-content h1 { margin-bottom: 0.5rem; }
+    .help-content h2 { margin-top: 2rem; margin-bottom: 0.5rem; color: var(--accent-hover); }
+    .help-content h3 { margin-top: 1.5rem; margin-bottom: 0.5rem; }
+    .help-content p, .help-content li { margin-bottom: 0.5rem; }
+    .help-content ul { padding-left: 1.5rem; }
+    .help-content code {
+      background: var(--bg-surface);
+      padding: 0.15rem 0.4rem;
+      border-radius: 3px;
+      font-size: 0.9em;
+    }
+    .help-content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+    }
+    .help-content th, .help-content td {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+    .help-content th {
+      background: var(--bg-surface);
+      color: var(--accent-hover);
+    }
+    .back-link { display: inline-block; margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+  <div class="help-content">
+    <a class="back-link" href="index.html">← Back to search</a>
+    <h1>Feelings Query Language</h1>
+    <p>Search for <em>Mood Swings</em> cards using a powerful query language.</p>
+
+    <h2>Basics</h2>
+    <p>A query is one or more <code>keyword:value</code> pairs separated by spaces. Multiple pairs are AND'd together.</p>
+    <p>A bare word without a keyword is treated as a name search: <code>love</code> is the same as <code>name:love</code>.</p>
+
+    <h2>Operators</h2>
+    <table>
+      <tr><th>Operator</th><th>Meaning</th><th>Example</th></tr>
+      <tr><td><code>:</code></td><td>Inclusive / partial match</td><td><code>c:wh</code> matches White</td></tr>
+      <tr><td><code>=</code></td><td>Exact match</td><td><code>c=white</code> matches only White, not multicolor</td></tr>
+      <tr><td><code>&gt;</code> <code>&lt;</code></td><td>Numeric comparison</td><td><code>dval&gt;4</code></td></tr>
+      <tr><td><code>&gt;=</code> or <code>=&gt;</code></td><td>Greater than or equal</td><td><code>dval&gt;=6</code></td></tr>
+      <tr><td><code>&lt;=</code> or <code>=&lt;</code></td><td>Less than or equal</td><td><code>cn&lt;=10</code></td></tr>
+    </table>
+
+    <h2>OR and Negation</h2>
+    <p>Use <code>or</code> between groups: <code>c:white or c:blue</code></p>
+    <p>Negate a filter with <code>-</code>: <code>-c:red</code> excludes red cards.</p>
+
+    <h2>Values</h2>
+    <ul>
+      <li>Bare strings: <code>love</code>, <code>white</code></li>
+      <li>Quoted strings (for spaces): <code>name:"Hurt Feelings"</code></li>
+      <li>Regular expressions: <code>a:/sper$/</code></li>
+    </ul>
+
+    <h3>Special Values</h3>
+    <ul>
+      <li><strong>Dice notation:</strong> Brackets are optional. <code>d:5</code> is the same as <code>d:[5]</code>.</li>
+      <li><strong>~ in text searches:</strong> Stands for "this card's name". <code>rul:"~ is worth"</code> matches cards whose ruling text contains their own name followed by "is worth".</li>
+    </ul>
+
+    <h2>Card Keywords</h2>
+    <table>
+      <tr><th>Keyword</th><th>Aliases</th><th>Description</th></tr>
+      <tr><td>name</td><td>n</td><td>Card name</td></tr>
+      <tr><td>id</td><td></td><td>Card or printing ID</td></tr>
+      <tr><td>color</td><td>c</td><td>Card color (White, Blue, Black, Red, Green)</td></tr>
+      <tr><td>dice</td><td>d</td><td>Primary dice notation</td></tr>
+      <tr><td>dice_value</td><td>dval</td><td>Sum of primary dice pips (numeric)</td></tr>
+      <tr><td>secondary_dice</td><td>dd, 2dice</td><td>Secondary dice notation</td></tr>
+      <tr><td>secondary_dice_value</td><td>2val, 2dval, ddval</td><td>Sum of secondary dice pips (numeric)</td></tr>
+      <tr><td>rules</td><td>t</td><td>Rules text (HTML stripped for search)</td></tr>
+      <tr><td>rulings</td><td>rul</td><td>Rulings text</td></tr>
+    </table>
+
+    <h2>Printing Keywords</h2>
+    <p>Using a printing keyword causes results to filter at the printing level.</p>
+    <table>
+      <tr><th>Keyword</th><th>Aliases</th><th>Description</th></tr>
+      <tr><td>frame</td><td>fr</td><td>Frame color</td></tr>
+      <tr><td>reminder</td><td>rem</td><td>Reminder icon glyph</td></tr>
+      <tr><td>rarity</td><td>r</td><td>Card rarity (Common, Uncommon, Rare, Mythic Rare)</td></tr>
+      <tr><td>dicecolor</td><td>dc</td><td>Physical die color</td></tr>
+      <tr><td>collectornumber</td><td>cn</td><td>Collector number (numeric)</td></tr>
+      <tr><td>set</td><td></td><td>Set code or edition name</td></tr>
+      <tr><td>treatment</td><td>tr</td><td>Print treatment (Standard, Foil, etc.)</td></tr>
+      <tr><td>artist</td><td>a</td><td>Artist name</td></tr>
+    </table>
+
+    <h2>Formatting Results</h2>
+    <table>
+      <tr><th>Keyword</th><th>Values</th><th>Description</th></tr>
+      <tr><td>sort</td><td>Any field name</td><td>Sort results. Prefix with <code>-</code> for reverse: <code>sort:-dice_value</code></td></tr>
+      <tr><td>as</td><td>cards, printings, text, textprintings</td><td>Control result display format</td></tr>
+    </table>
+    <ul>
+      <li><strong>cards</strong> (default) — Latest printing of each card, as an image</li>
+      <li><strong>printings</strong> — All printings of matching cards</li>
+      <li><strong>text</strong> — Card names only (latest printing)</li>
+      <li><strong>textprintings</strong> — All printings, names only</li>
+    </ul>
+
+    <h2>Partial Matching</h2>
+    <p>The <code>:</code> operator does substring matching, so abbreviations work:</p>
+    <ul>
+      <li><code>c:w</code> → White</li>
+      <li><code>c:bl</code> → Blue and Black</li>
+      <li><code>r:m</code> → Mythic Rare</li>
+    </ul>
+
+    <h2>Examples</h2>
+    <ul>
+      <li><code>r:common c:white</code> — All common white cards</li>
+      <li><code>love as:printings</code> — All printings of the card Love</li>
+      <li><code>r:mythic set:"Edition 1"</code> — All mythics from Edition 1</li>
+      <li><code>r:m set:msw</code> — Same as above (partial match)</li>
+      <li><code>a:"Magali Villeneuve"</code> — Cards with art by this artist</li>
+      <li><code>a:sper</code> — Finds artists with "sper" in their name</li>
+      <li><code>a:/sper$/</code> — Artist name ending in "sper"</li>
+      <li><code>c:red sort:dice_value</code> — Red cards sorted by dice value</li>
+      <li><code>dval&gt;5 c:green</code> — Green cards with dice value over 5</li>
+    </ul>
+  </div>
+</body>
+</html>
