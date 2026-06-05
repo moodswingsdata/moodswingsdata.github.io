@@ -8,18 +8,26 @@ import { PRINTING_FIELDS, NUMERIC_FIELDS, DIRECTIVE_FIELDS } from "./parser.js";
 
 let cards = [];
 let printings = [];
+let editions = [];
 let cardIndex = new Map(); // card_id -> card
 let printingsIndex = new Map(); // card_id -> printing[]
+let editionIndex = new Map(); // edition_id -> edition
 
 /**
- * Initialize the search engine with card and printing data.
+ * Initialize the search engine with card, printing, and edition data.
  */
-export function initSearch(cardsData, printingsData) {
+export function initSearch(cardsData, printingsData, editionsData) {
   cards = cardsData;
   printings = printingsData;
+  editions = editionsData || [];
 
   cardIndex.clear();
   printingsIndex.clear();
+  editionIndex.clear();
+
+  for (const edition of editions) {
+    editionIndex.set(edition.id, edition);
+  }
 
   for (const card of cards) {
     cardIndex.set(card.id, card);
@@ -167,6 +175,10 @@ function matchesFilter(card, printing, filter, errors) {
     return matchValue(card.name, operator, value, valueType);
   }
   if (field === "color") {
+    const lowerValue = value.toLowerCase();
+    if (operator === ":" && (lowerValue === "none" || lowerValue === "colorless")) {
+      return card.color.length === 0;
+    }
     return matchValue(card.color, operator, value, valueType, true);
   }
   if (field === "dice") {
@@ -214,9 +226,11 @@ function matchesFilter(card, printing, filter, errors) {
     return matchNumeric(printing.collector_number, operator, value);
   }
   if (field === "set") {
+    const edition = editionIndex.get(printing.edition_id);
+    if (!edition) return false;
     return (
-      matchValue(printing.set_code, operator, value, valueType, true) ||
-      matchValue(printing.edition_name, operator, value, valueType)
+      matchValue(edition.set_code, operator, value, valueType, true) ||
+      matchValue(edition.edition_name, operator, value, valueType)
     );
   }
   if (field === "treatment") {
@@ -376,7 +390,10 @@ function getSortValue(result, field) {
     }
     if (field === "collector_number" || field === "cn")
       return printing.collector_number;
-    if (field === "set") return printing.set_code;
+    if (field === "set") {
+      const edition = editionIndex.get(printing.edition_id);
+      return edition ? edition.set_code : "";
+    }
     if (field === "artist") return printing._artist_str;
     if (field === "frame") return printing.frame;
   }
@@ -416,6 +433,14 @@ function projectResults(results, asMode) {
   }
 
   return results;
+}
+
+/**
+ * Get the edition for a printing.
+ */
+export function getEditionForPrinting(printing) {
+  if (!printing) return null;
+  return editionIndex.get(printing.edition_id) || null;
 }
 
 /**

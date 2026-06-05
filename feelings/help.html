@@ -86,7 +86,7 @@
       <tr><th>Keyword</th><th>Aliases</th><th>Description</th></tr>
       <tr><td>name</td><td>n</td><td>Card name</td></tr>
       <tr><td>id</td><td></td><td>Card or printing ID</td></tr>
-      <tr><td>color</td><td>c</td><td>Card color (White, Blue, Black, Red, Green)</td></tr>
+      <tr><td>color</td><td>c</td><td>Card color (White, Blue, Black, Red, Green, None/Colorless)</td></tr>
       <tr><td>dice</td><td>d</td><td>Primary dice notation</td></tr>
       <tr><td>dice_value</td><td>dval</td><td>Sum of primary dice pips (numeric)</td></tr>
       <tr><td>secondary_dice</td><td>dd, 2dice</td><td>Secondary dice notation</td></tr>
@@ -134,6 +134,8 @@
     <ul>
       <li><code>r:common c:white</code> — All common white cards</li>
       <li><code>love as:printings</code> — All printings of the card Love</li>
+      <li><code>c=</code> — Colorless cards</li>
+      <li><code>c:none</code> — Same as above (colorless cards)</li>
       <li><code>r:mythic set:"Edition 1"</code> — All mythics from Edition 1</li>
       <li><code>r:m set:msw</code> — Same as above (partial match)</li>
       <li><code>a:"Magali Villeneuve"</code> — Cards with art by this artist</li>

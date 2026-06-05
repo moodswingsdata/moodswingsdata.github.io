@@ -20,7 +20,7 @@
   <div id="output"></div>
   <script type="module">
     import { parseQuery, KEYWORD_MAP, PRINTING_FIELDS, NUMERIC_FIELDS, DIRECTIVE_FIELDS } from "./parser.js";
-    import { initSearch, executeSearch, getPrintingsForCard } from "./search.js";
+    import { initSearch, executeSearch, getPrintingsForCard, getEditionForPrinting } from "./search.js";
 
     const output = document.getElementById("output");
     let passed = 0;
@@ -202,9 +202,11 @@
     // Load test data
     const cardsRes = await fetch("data/cards.json");
     const printingsRes = await fetch("data/printings.json");
+    const editionsRes = await fetch("data/editions.json");
     const cardsData = await cardsRes.json();
     const printingsData = await printingsRes.json();
-    initSearch(cardsData, printingsData);
+    const editionsData = await editionsRes.json();
+    initSearch(cardsData, printingsData, editionsData);
 
     // Basic name search
     {
@@ -264,6 +266,18 @@
         "search 'c:white or c:blue': all white or blue");
     }
 
+    // Color: "none" and "colorless" match empty color array
+    {
+      const { ast } = parseQuery("c:none");
+      const { results } = executeSearch(ast);
+      assert(results.every(r => r.card.color.length === 0), "search 'c:none': all colorless");
+    }
+    {
+      const { ast } = parseQuery("c:colorless");
+      const { results } = executeSearch(ast);
+      assert(results.every(r => r.card.color.length === 0), "search 'c:colorless': all colorless");
+    }
+
     // Sort
     {
       const { ast } = parseQuery("c:red sort:dice_value");
@@ -300,7 +314,10 @@
       const { ast } = parseQuery("set:MSW");
       const { results } = executeSearch(ast);
       assert(results.length > 0, "search 'set:MSW': has results");
-      assert(results.every(r => r.printing.set_code === "MSW"), "search 'set:MSW': all from MSW");
+      assert(results.every(r => {
+        const edition = getEditionForPrinting(r.printing);
+        return edition && edition.set_code.toLowerCase() === "msw";
+      }), "search 'set:MSW': all from MSW");
     }
 
     // Rules text search with tilde
