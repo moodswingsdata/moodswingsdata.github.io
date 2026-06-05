@@ -202,7 +202,7 @@ function renderResults() {
       div.className = "result-card";
       const imgSrc = (printing && printing.card_image_url)
         ? escapeHtml(printing.card_image_url)
-        : "cardback.png";
+        : "missing.png";
       div.innerHTML = `
         <img src="${imgSrc}" alt="${escapeHtml(card.name)}" loading="lazy">
         <div class="card-name">${escapeHtml(card.name)}</div>
@@ -247,7 +247,7 @@ function openPopover(index) {
   if (printing && printing.card_image_url) {
     imageEl.innerHTML = `<img src="${escapeHtml(printing.card_image_url)}" alt="${escapeHtml(card.name)}">`;
   } else {
-    imageEl.innerHTML = `<img src="cardback.png" alt="${escapeHtml(card.name)}">`;
+    imageEl.innerHTML = `<img src="missing.png" alt="${escapeHtml(card.name)}">`;
   }
 
   // Details
@@ -345,7 +345,7 @@ function showPopoverForResult(result) {
   if (printing && printing.card_image_url) {
     imageEl.innerHTML = `<img src="${escapeHtml(printing.card_image_url)}" alt="${escapeHtml(card.name)}">`;
   } else {
-    imageEl.innerHTML = `<img src="cardback.png" alt="${escapeHtml(card.name)}">`;
+    imageEl.innerHTML = `<img src="missing.png" alt="${escapeHtml(card.name)}">`;
   }
 
   const detailsEl = popover.querySelector(".popover-details");
