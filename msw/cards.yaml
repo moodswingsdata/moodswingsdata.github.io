@@ -1,6 +1,7 @@
 - id: 4ff3b06d-ec29-57ce-8826-008d574b9273
   name: Altruism
-  color: White
+  color:
+  - White
   dice: '[3]'
   dice_value: 3
   secondary_dice: '[6][1]'
@@ -17,7 +18,8 @@
     discard pile will be empty.
 - id: dc03d692-52e1-5108-9468-84766b872712
   name: Ambition
-  color: Black
+  color:
+  - Black
   dice: '[2]'
   dice_value: 2
   secondary_dice: null
@@ -31,7 +33,8 @@
     card for Hurt Feelings before you play the additional card for Ambition.
 - id: 59909272-b94a-51a3-9ebb-e661ce15cd71
   name: Ambivalence
-  color: Blue
+  color:
+  - Blue
   dice: '[6]'
   dice_value: 6
   secondary_dice: '[3]'
@@ -42,7 +45,8 @@
     is worth [3] if there are two red moods, two green moods, or a red mood and a green mood in play.
 - id: 612a5606-161d-5f24-bd92-5793d9f0dd3d
   name: Anger
-  color: Red
+  color:
+  - Red
   dice: '[0]'
   dice_value: 0
   secondary_dice: null
@@ -68,7 +72,8 @@
     both into the discard pile. Each instance of Anger has to be applied separately.
 - id: a843cb49-9be8-570d-84cf-76d57511dbf2
   name: Animosity
-  color: Red
+  color:
+  - Red
   dice: '[3]'
   dice_value: 3
   secondary_dice: '[5]'
@@ -81,7 +86,8 @@
     of [5].
 - id: 34f674cb-cec1-505e-b7fb-ae5bcc6ff674
   name: Angst
-  color: Black
+  color:
+  - Black
   dice: '[3]'
   dice_value: 3
   secondary_dice: null
@@ -105,7 +111,8 @@
     pile. You may first play the additional card for Hurt Feelings before you play the additional card for Angst.
 - id: 375c17d4-71b2-558f-a49e-66fc69001c3c
   name: Anxiety
-  color: Blue
+  color:
+  - Blue
   dice: '[2]'
   dice_value: 2
   secondary_dice: null
@@ -118,7 +125,8 @@
   - '[0] is even.'
 - id: 11a0a573-79ed-5741-abba-9df81046c1b7
   name: Apathy
-  color: Black
+  color:
+  - Black
   dice: '[4]'
   dice_value: 4
   secondary_dice: null
@@ -129,7 +137,8 @@
     cards without one of the three main abilities ("To play this card," "While in play," and "After playing this mood").
 - id: 011ffb3c-6c78-5bae-9658-10b88baa9bc0
   name: Arrogance
-  color: Red
+  color:
+  - Red
   dice: '[2]'
   dice_value: 2
   secondary_dice: null
@@ -148,7 +157,8 @@
     has it, the card goes back to its original owner.
 - id: 9325105f-32cf-5676-a3c1-5b0af6315d72
   name: Avoidance
-  color: Blue
+  color:
+  - Blue
   dice: '[3]'
   dice_value: 3
   secondary_dice: null
@@ -164,7 +174,8 @@
   - Avoidance can be chosen as the card you choose to move.
 - id: 518520f9-3407-5d21-a294-74f029017fa0
   name: Awe
-  color: Green
+  color:
+  - Green
   dice: '[4]'
   dice_value: 4
   secondary_dice: null
@@ -184,7 +195,8 @@
   - Cards that score additional times (Bliss, Enthusiasm, Exhilaration, and Passion) do not score, as there is no scoring.
 - id: fb225a36-1180-5132-849f-79d49aefa35b
   name: Bashfulness
-  color: Blue
+  color:
+  - Blue
   dice: '[6]'
   dice_value: 6
   secondary_dice: null
@@ -207,7 +219,8 @@
     who has Bashfulness would put it on the bottom of the deck and draw the card (assuming they won this turn).
 - id: 0ae16dd1-ea47-52bf-99dc-2c2e8acf3bdf
   name: Benevolence
-  color: White
+  color:
+  - White
   dice: '[2]'
   dice_value: 2
   secondary_dice: null
@@ -223,7 +236,8 @@
     with Imagination. The card in your hand doesn't become the color named by Imagination until it is in play.
 - id: e7f1779c-3866-5e35-8dd9-9ec4d65a620d
   name: Betrayal
-  color: Black
+  color:
+  - Black
   dice: '[6]'
   dice_value: 6
   secondary_dice: null
@@ -244,7 +258,8 @@
     it on the bottom of the deck and they would draw the card.
 - id: 5670c935-e7c6-50c2-8a98-3f832b4005f6
   name: Bitterness
-  color: Black
+  color:
+  - Black
   dice: '[0]'
   dice_value: 0
   secondary_dice: null
@@ -261,7 +276,8 @@
   - You should count suppressed cards when calculating the most common color.
 - id: 8287e325-2740-57f2-8cce-30c0c67ffc45
   name: Bliss
-  color: Green
+  color:
+  - Green
   dice: '[2]'
   dice_value: 2
   secondary_dice: null
@@ -281,7 +297,8 @@
   - Bliss remembers the color of the card discarded. The card doesn't need to be in the discard pile for the effect to happen.
 - id: 85785981-46a8-5e47-89f6-f3bfaf019b2c
   name: Boredom
-  color: Red
+  color:
+  - Red
   dice: '[4]'
   dice_value: 4
   secondary_dice: null
@@ -292,7 +309,8 @@
     cards without one of the three main abilities ("To play this card," "While in play," and "After playing this mood").
 - id: 8e5d237e-740a-5125-97f6-ab6d87637b0f
   name: Bravado
-  color: Red
+  color:
+  - Red
   dice: '[3]'
   dice_value: 3
   secondary_dice: null
@@ -306,7 +324,8 @@
     card for Hurt Feelings before you play the additional card for Bravado.
 - id: 4cb63495-c751-5e2b-8e5a-1a6397393e79
   name: Celebration
-  color: Green
+  color:
+  - Green
   dice: '[3]'
   dice_value: 3
   secondary_dice: '[6][1]'
@@ -320,7 +339,8 @@
     have no cards (as you would then have one color to their zero colors).
 - id: d87924ef-49ee-5429-b1bb-bdbd2569a199
   name: Chaos
-  color: Red
+  color:
+  - Red
   dice: '[6]'
   dice_value: 6
   secondary_dice: null
@@ -338,7 +358,8 @@
     and dealt out starting with that player.)
 - id: a0d37cc4-9064-53ac-9490-e0a77dd8a4d2
   name: Charity
-  color: White
+  color:
+  - White
   dice: '[1]'
   dice_value: 1
   secondary_dice: null
@@ -351,7 +372,8 @@
     card for Hurt Feelings before you play the additional card for Charity.
 - id: 2d7a30b8-38ea-5353-bb1d-0cd43c722806
   name: Cheer
-  color: Green
+  color:
+  - Green
   dice: '[3]'
   dice_value: 3
   secondary_dice: '[5]'
@@ -368,7 +390,8 @@
     you played the card. If you didn't discard a card, the card's value is [3], and if you did, the card's value is [5].
 - id: e7450bd8-9555-5a10-ab77-450049c60210
   name: Chivalry
-  color: White
+  color:
+  - White
   dice: '[3]'
   dice_value: 3
   secondary_dice: '[5]'
@@ -380,7 +403,8 @@
     Ways to Play</a>), this card is worth [5] even if your teammate went first.
 - id: b06c8d15-8fad-54f2-aadf-e306eea80a25
   name: Complacency
-  color: White
+  color:
+  - White
   dice: '[4]'
   dice_value: 4
   secondary_dice: null
@@ -391,7 +415,8 @@
     cards without one of the three main abilities ("To play this card," "While in play," and "After playing this mood").
 - id: 64d63bed-7cd9-5d30-8874-8c74b92d1b05
   name: Compulsion
-  color: Red
+  color:
+  - Red
   dice: '[3]'
   dice_value: 3
   secondary_dice: null
@@ -408,7 +433,8 @@
     with Compulsion.
 - id: 8e6a1519-97ca-5443-aa20-f90d032e0423
   name: Condescension
-  color: Black
+  color:
+  - Black
   dice: '[3]'
   dice_value: 3
   secondary_dice: '[6]'
@@ -422,7 +448,8 @@
     Ways to Play</a>), you can give the extra card to a teammate.
 - id: 26935aa4-21ee-5f11-a953-4e8a4cb4d007
   name: Confusion
-  color: Blue
+  color:
+  - Blue
   dice: '[4]'
   dice_value: 4
   secondary_dice: null
@@ -436,7 +463,8 @@
     cards have been passed.
 - id: 8a16ab72-441b-53ed-bfb2-760477e7d958
   name: Contempt
-  color: Black
+  color:
+  - Black
   dice: '[1]'
   dice_value: 1
   secondary_dice: null
@@ -454,7 +482,8 @@
   - If Imagination makes Contempt green or white, it will be put into the discard pile.
 - id: 5966e99f-267c-5090-b61e-db8e77fb0577
   name: Conviction
-  color: White
+  color:
+  - White
   dice: '[2]'
   dice_value: 2
   secondary_dice: null
@@ -466,7 +495,8 @@
   - You can choose any player's mood, including your own. That mood's player is the one who draws the card.
 - id: 3be13926-6df3-5bfe-8839-a36540670fa7
   name: Corruption
-  color: Black
+  color:
+  - Black
   dice: '[2]'
   dice_value: 2
   secondary_dice: null
@@ -485,7 +515,8 @@
     one round to get two won rounds.
 - id: dea9a96d-7ee3-5374-aedf-ed1b8ca3d937
   name: Courage
-  color: White
+  color:
+  - White
   dice: '[1]'
   dice_value: 1
   secondary_dice: null
@@ -502,7 +533,8 @@
     in play" effects happen, and Courage can choose Obsession to be put into the discard pile.
 - id: 06f6dc87-58bb-5668-a4e1-eeb38ad693c1
   name: Creativity
-  color: Blue
+  color:
+  - Blue
   dice: '[0]'
   dice_value: 0
   secondary_dice: null
@@ -525,7 +557,8 @@
     itself.
 - id: d4a2a670-b99a-50af-8142-0a1edc674b23
   name: Cruelty
-  color: Black
+  color:
+  - Black
   dice: '[3]'
   dice_value: 3
   secondary_dice: null
@@ -543,7 +576,8 @@
     like Recklessness).
 - id: 28daf6ae-739b-5cd9-b8ea-fa2cc9cfd51f
   name: Curiosity
-  color: Blue
+  color:
+  - Blue
   dice: '[3]'
   dice_value: 3
   secondary_dice: null
@@ -559,7 +593,8 @@
     a value of [6], you will need to reveal a card that's actually white from the chosen player's hand.
 - id: 9d6bba0a-5ec9-57b2-8e72-3480061bcb90
   name: Cynicism
-  color: Black
+  color:
+  - Black
   dice: '[3]'
   dice_value: 3
   secondary_dice: '[6]'
@@ -573,7 +608,8 @@
   - You get to choose which card to give to your opponent.
 - id: 9fc280f5-ee7f-5b64-a48a-bd880e0483e3
   name: Delight
-  color: Green
+  color:
+  - Green
   dice: '[3]'
   dice_value: 3
   secondary_dice: '[5]'
@@ -590,7 +626,8 @@
     you played the card. If you didn't discard a card, the card's value is [3], and if you did, the card's value is [5].
 - id: d059f586-4f38-5ec1-ad23-bbf17a8aab6e
   name: Denial
-  color: Blue
+  color:
+  - Blue
   dice: '[1]'
   dice_value: 1
   secondary_dice: null
@@ -606,7 +643,8 @@
     player with Guile. If you then play Denial choosing Love as one of your two cards, Love would go into your hand.
 - id: ca8e7c50-efd1-5f4d-848d-57bb045fc241
   name: Determination
-  color: Green
+  color:
+  - Green
   dice: '[3]'
   dice_value: 3
   secondary_dice: '[6]'
@@ -620,7 +658,8 @@
     can stay at [6] even if the three cards that share the same color change.
 - id: 541a97e1-665a-5339-b166-67087dcc8ff4
   name: Dignity
-  color: White
+  color:
+  - White
   dice: '[3]'
   dice_value: 3
   secondary_dice: '[5]'
@@ -637,7 +676,8 @@
     you played the card. If you didn't discard a card, the card's value is [3], and if you did, the card's value is [5].
 - id: 031876e3-2e0d-5802-90ed-cef9ecfaf843
   name: Discipline
-  color: White
+  color:
+  - White
   dice: '[6]'
   dice_value: 6
   secondary_dice: '[3]'
@@ -648,7 +688,8 @@
     is worth [3] if there are two black moods, two red moods, or a black mood and a red mood in play.
 - id: 7709e849-9887-59a3-b8a5-6e1c1d603f2b
   name: Disgust
-  color: Black
+  color:
+  - Black
   dice: '[6]'
   dice_value: 6
   secondary_dice: '[3]'
@@ -659,7 +700,8 @@
     is worth [3] if there are two green moods, two white moods, or a green mood and a white mood in play.
 - id: 86f5f7be-e478-5467-b3f2-8252e319d477
   name: Disillusionment
-  color: White
+  color:
+  - White
   dice: '[2]'
   dice_value: 2
   secondary_dice: null
@@ -678,7 +720,8 @@
   - A second Disillusionment (say you copy it with Creativity) can destroy the first Disillusionment.
 - id: b03fa3ea-0384-5537-b974-ebd455622639
   name: Disorientation
-  color: Blue
+  color:
+  - Blue
   dice: '[0]'
   dice_value: 0
   secondary_dice: null
@@ -697,7 +740,8 @@
     [0] is named.
 - id: a0046c3d-2d8b-5014-ae68-47d3d2bc39ca
   name: Disregard
-  color: Green
+  color:
+  - Green
   dice: '[6]'
   dice_value: 6
   secondary_dice: '[3]'
@@ -708,7 +752,8 @@
     is worth [3] if there are two blue moods, two black moods, or a blue mood and a black mood in play.
 - id: 34db865f-eec2-575c-bfd4-5b38566755d4
   name: Doubt
-  color: Blue
+  color:
+  - Blue
   dice: '[2]'
   dice_value: 2
   secondary_dice: null
@@ -726,7 +771,8 @@
   - This effect also affects you, the player who played Doubt, but not until your next turn.
 - id: efd67624-1048-5bfb-9aa4-c347b27ca53c
   name: Duplicity
-  color: Blue
+  color:
+  - Blue
   dice: '[0]'
   dice_value: 0
   secondary_dice: null
@@ -751,7 +797,8 @@
     Ambivalence with the second effect of Courage.
 - id: d27ba546-7886-5a60-aa27-869945d3251d
   name: Eagerness
-  color: Green
+  color:
+  - Green
   dice: '[2]'
   dice_value: 2
   secondary_dice: null
@@ -768,7 +815,8 @@
     who played Imagination.
 - id: 8621fbe9-2a03-5684-a26a-bbf53e3419a1
   name: Embarrassment
-  color: Red
+  color:
+  - Red
   dice: '[3]'
   dice_value: 3
   secondary_dice: '[5]'
@@ -782,7 +830,8 @@
     right corner.
 - id: d1431b6c-7621-50de-9c03-be7c1b426029
   name: Encouragement
-  color: White
+  color:
+  - White
   dice: '[3]'
   dice_value: 3
   secondary_dice: null
@@ -800,7 +849,8 @@
     of the game. If a choice had previously been made for the card (from when you played it) that previous choice returns.
 - id: 932f1867-e25d-5cfc-bafc-29f3c6fff5b3
   name: Enjoyment
-  color: Green
+  color:
+  - Green
   dice: '[3]'
   dice_value: 3
   secondary_dice: '[6]'
@@ -811,7 +861,8 @@
     is worth [6] if there are two red moods, two white moods, or a red mood and a white mood in play.
 - id: 05bf33fd-16e2-512c-8574-105a255f2bee
   name: Enthusiasm
-  color: Green
+  color:
+  - Green
   dice: '[0]'
   dice_value: 0
   secondary_dice: null
@@ -826,7 +877,8 @@
     you get to add all the extra combined scores together.
 - id: d7d1099f-de0a-5112-925e-8313bf1829fa
   name: Envy
-  color: Black
+  color:
+  - Black
   dice: '[0]'
   dice_value: 0
   secondary_dice: null
@@ -845,7 +897,8 @@
   - If this card is suppressed, it has a value of [0] regardless of how many moods the moodiest opponent has.
 - id: 4fdad2cd-ba05-5e88-a8e0-e3e4d98c0f16
   name: Euphoria
-  color: Green
+  color:
+  - Green
   dice: '[0]'
   dice_value: 0
   secondary_dice: null
@@ -860,7 +913,8 @@
   - If this card is suppressed, it has a value of [0] regardless of how many moods are in play.
 - id: 1156cc87-a02b-5ae1-9146-f933d3df7e5c
   name: Excitement
-  color: Red
+  color:
+  - Red
   dice: '[3]'
   dice_value: 3
   secondary_dice: '[6]'
@@ -871,7 +925,8 @@
     is worth [6] if there are two black moods, two green moods, or a black mood and a green mood in play.
 - id: 8fe9728e-cc1a-583e-b312-951e73b67259
   name: Exhilaration
-  color: Red
+  color:
+  - Red
   dice: '[0]'
   dice_value: 0
   secondary_dice: null
@@ -890,7 +945,8 @@
   - Moods are cards in play, so you can't discard a card in your hand to satisfy the "To play this card" requirement.
 - id: 949a5ba6-e205-5f06-a1d3-547c00f2a418
   name: Faith
-  color: White
+  color:
+  - White
   dice: '[3]'
   dice_value: 3
   secondary_dice: null
@@ -914,7 +970,8 @@
   - If Imagination is in play, it only changes the color of the moods in play and not the cards in your hand.
 - id: 199a4648-1af7-59e0-bca1-3edd55515de5
   name: Fascination
-  color: Green
+  color:
+  - Green
   dice: '[3]'
   dice_value: 3
   secondary_dice: '[6][1]'
@@ -929,7 +986,8 @@
     Ways to Play</a>), you can give the extra card to a teammate.
 - id: 4756780a-54e5-58be-bdc2-3d69f46d0a4c
   name: Fear
-  color: Blue
+  color:
+  - Blue
   dice: '[0]'
   dice_value: 0
   secondary_dice: null
@@ -948,7 +1006,8 @@
     for Hurt Feelings before you play the additional card for Fear.
 - id: cf2d0f9d-4d7b-57f2-b082-a9ce816e25ed
   name: Fickleness
-  color: Blue
+  color:
+  - Blue
   dice: '[0]'
   dice_value: 0
   secondary_dice: null
@@ -964,7 +1023,8 @@
   - Each card goes into the hand of the player who currently has it in play. It doesn't matter if another player played it.
 - id: 5a917bbf-03ca-593e-af30-182d7af759f0
   name: Fondness
-  color: Green
+  color:
+  - Green
   dice: '[0]'
   dice_value: 0
   secondary_dice: '[6][1]'
@@ -977,7 +1037,8 @@
   - Fondness counts itself toward how many moods you have in play.
 - id: 4aa69235-e4f8-54be-856b-4f823d0a6a57
   name: Friendliness
-  color: White
+  color:
+  - White
   dice: '[2]'
   dice_value: 2
   secondary_dice: null
@@ -991,7 +1052,8 @@
     card for Hurt Feelings before you play the additional card for Friendliness.
 - id: a064290b-051c-558d-835b-3504457f748b
   name: Frustration
-  color: Red
+  color:
+  - Red
   dice: '[6]'
   dice_value: 6
   secondary_dice: '[3]'
@@ -1002,7 +1064,8 @@
     is worth [3] if there are two white moods, two blue moods, or a white mood and a blue mood in play.
 - id: 5195fb6e-51d2-5b91-8cc7-88a54147ca36
   name: Fury
-  color: Red
+  color:
+  - Red
   dice: '[4]'
   dice_value: 4
   secondary_dice: null
@@ -1017,7 +1080,8 @@
     the choice of other cards.
 - id: af2f74b3-c457-52c4-939a-f8330305b49d
   name: Generosity
-  color: Green
+  color:
+  - Green
   dice: '[6]'
   dice_value: 6
   secondary_dice: null
@@ -1037,7 +1101,8 @@
     in the color of the card you played for Generosity.
 - id: 7d646ea3-70d8-55b8-bae4-99ccf9acd624
   name: Glee
-  color: Red
+  color:
+  - Red
   dice: '[0]'
   dice_value: 0
   secondary_dice: '[6]'
@@ -1048,7 +1113,8 @@
     play an additional card whenever you play a card with a [0] or [1] in its top right corner).
 - id: df8f16f3-8bcf-550b-9ebe-7e5384973369
   name: Gluttony
-  color: Red
+  color:
+  - Red
   dice: '[2]'
   dice_value: 2
   secondary_dice: null
@@ -1070,7 +1136,8 @@
     the discard pile before its effect would happen.
 - id: 335d7ed8-19b3-5c23-83ee-ddbd4e5c43e1
   name: Grace
-  color: Green
+  color:
+  - Green
   dice: '[0]'
   dice_value: 0
   secondary_dice: null
@@ -1102,7 +1169,8 @@
     Ways to Play</a>), you have to match the color of a mood you have in play and not your teammate.
 - id: ef9122c5-74c2-5f17-ab8e-07afc82690af
   name: Grief
-  color: Black
+  color:
+  - Black
   dice: '[0]'
   dice_value: 0
   secondary_dice: null
@@ -1128,7 +1196,8 @@
     Grief.
 - id: 10aa8804-5526-5a58-a772-b988847f6332
   name: Guile
-  color: Blue
+  color:
+  - Blue
   dice: '[0]'
   dice_value: 0
   secondary_dice: null
@@ -1149,7 +1218,8 @@
   - If Guile moves to another player, you still keep the card taken by it.
 - id: 98086f97-08e5-50a9-8d07-9b6fda107c11
   name: Guilt
-  color: White
+  color:
+  - White
   dice: '[2]'
   dice_value: 2
   secondary_dice: null
@@ -1177,7 +1247,8 @@
   - You may choose to suppress your own black or red mood.
 - id: 014fed71-ce39-5049-b13b-81c59868c361
   name: Happiness
-  color: Green
+  color:
+  - Green
   dice: '[2]'
   dice_value: 2
   secondary_dice: '[6][2]'
@@ -1188,7 +1259,8 @@
   - It's fine if more than one player has both.
 - id: bd4b0a8b-8168-5e1b-bd43-18a209b5f7d3
   name: Harmony
-  color: Green
+  color:
+  - Green
   dice: '[2]'
   dice_value: 2
   secondary_dice: null
@@ -1208,7 +1280,8 @@
     card for Hurt Feelings before you play the additional card for Harmony.
 - id: 1cf3ab5e-88ab-56a7-9a66-45893162b269
   name: Hate
-  color: Black
+  color:
+  - Black
   dice: '[0]'
   dice_value: 0
   secondary_dice: null
@@ -1221,7 +1294,8 @@
   - No matter whose card you put on the bottom of the deck, you draw the card.
 - id: ce87aa6b-f7bf-5d98-bedf-bd52c46c246b
   name: Hesitation
-  color: Blue
+  color:
+  - Blue
   dice: '[2]'
   dice_value: 2
   secondary_dice: null
@@ -1239,7 +1313,8 @@
   - If Imagination makes Hesitation red or green, it will return itself to your hand.
 - id: cc9a7bdd-2d68-5107-abd0-bb8a0ab65b3f
   name: Honor
-  color: White
+  color:
+  - White
   dice: '[3]'
   dice_value: 3
   secondary_dice: null
@@ -1255,7 +1330,8 @@
     Honor played is the person who goes first.
 - id: fc6194c3-010e-5f90-a3f3-db445c64601e
   name: Hope
-  color: Green
+  color:
+  - Green
   dice: '[0]'
   dice_value: 0
   secondary_dice: null
@@ -1272,7 +1348,8 @@
     Eagerness, which would allow you to play an additional card in the color of the card you played for Hope.
 - id: c69e3b6b-0c6c-5ba8-a6f9-4cad64a6fb08
   name: Hostility
-  color: Red
+  color:
+  - Red
   dice: '[3]'
   dice_value: 3
   secondary_dice: null
@@ -1292,7 +1369,8 @@
     of [6] into the discard pile.
 - id: ea760944-2431-508e-b88f-4cb6b0deefc5
   name: Idealism
-  color: White
+  color:
+  - White
   dice: '[0]'
   dice_value: 0
   secondary_dice: null
@@ -1315,7 +1393,8 @@
   - You cannot choose which cards Idealism affects. All your cards with two dice totals will have the higher value.
 - id: 93601f3b-e272-519e-9463-f4a0039e1e73
   name: Imagination
-  color: Blue
+  color:
+  - Blue
   dice: '[3]'
   dice_value: 3
   secondary_dice: null
@@ -1332,7 +1411,8 @@
     and choose green. All the moods are now green and no longer red.
 - id: e6686a28-f83e-537c-ab72-af9ca34d0f0d
   name: Indecisiveness
-  color: Blue
+  color:
+  - Blue
   dice: '[3]'
   dice_value: 3
   secondary_dice: null
@@ -1348,7 +1428,8 @@
     target="_blank">Other Ways to Play</a>), you can't affect a teammate's cards.
 - id: e1a9c2d5-01fa-5b17-b513-7fe78eed0e5e
   name: Indifference
-  color: Blue
+  color:
+  - Blue
   dice: '[4]'
   dice_value: 4
   secondary_dice: null
@@ -1359,7 +1440,8 @@
     cards without one of the three main abilities ("To play this card," "While in play," and "After playing this mood").
 - id: 07621913-770c-5c26-9b99-f98b9234beaf
   name: Infatuation
-  color: Red
+  color:
+  - Red
   dice: '[3]'
   dice_value: 3
   secondary_dice: '[6][3]'
@@ -1373,7 +1455,8 @@
   - If you do not have two other moods in play, you can't get the [6][3] value.
 - id: ee6712f7-2408-5886-ac43-627f8cb0c68e
   name: Insecurity
-  color: Blue
+  color:
+  - Blue
   dice: '[2]'
   dice_value: 2
   secondary_dice: null
@@ -1396,7 +1479,8 @@
     put into your hand before its effect would happen.
 - id: 3d08bd50-a6c8-58ea-89aa-0dd21dd3bca3
   name: Instability
-  color: Red
+  color:
+  - Red
   dice: '[2]'
   dice_value: 2
   secondary_dice: null
@@ -1412,7 +1496,8 @@
   - Instability's printed card text contains a small subject-verb agreement error that does not affect gameplay.
 - id: 5945363b-92a3-5980-9313-f36e487e4444
   name: Intimidation
-  color: Black
+  color:
+  - Black
   dice: '[1]'
   dice_value: 1
   secondary_dice: null
@@ -1430,7 +1515,8 @@
     card for Hurt Feelings before you play the additional card for Intimidation.
 - id: 8cc8beb6-3aeb-5b64-b48d-0d6c7ed65e5b
   name: Joy
-  color: Green
+  color:
+  - Green
   dice: '[3]'
   dice_value: 3
   secondary_dice: null
@@ -1446,7 +1532,8 @@
     played for Joy.
 - id: 324bf66c-1bd8-5023-82bc-e7d0a8cb1205
   name: Kindness
-  color: White
+  color:
+  - White
   dice: '[2]'
   dice_value: 2
   secondary_dice: null
@@ -1461,7 +1548,8 @@
     are playing for which effect.
 - id: c623a931-2134-5868-ac3f-3c0039676fd1
   name: Laziness
-  color: Green
+  color:
+  - Green
   dice: '[4]'
   dice_value: 4
   secondary_dice: null
@@ -1472,7 +1560,8 @@
     cards without one of the three main abilities ("To play this card," "While in play," and "After playing this mood").
 - id: 4102e551-315d-5490-abec-a1389d261a34
   name: Love
-  color: Green
+  color:
+  - Green
   dice: '[4]'
   dice_value: 4
   secondary_dice: '[6][6]'
@@ -1485,7 +1574,8 @@
   - Imagination (which turns all cards one color) will give Love a value of [4].
 - id: 566c6fe5-cee5-5811-857d-1f26fc2d1654
   name: Loyalty
-  color: White
+  color:
+  - White
   dice: '[3]'
   dice_value: 3
   secondary_dice: '[6]'
@@ -1496,7 +1586,8 @@
     is worth [6] if there are two green moods, two blue moods, or a green mood and a blue mood in play.
 - id: 83fa31d1-320f-595c-b69d-c0e260aa11fa
   name: Malice
-  color: Black
+  color:
+  - Black
   dice: '[0]'
   dice_value: 0
   secondary_dice: null
@@ -1516,7 +1607,8 @@
     discard pile. Malice doesn't affect itself.
 - id: 8c416451-cbda-54dd-8b43-b23ecdaf3349
   name: Meekness
-  color: White
+  color:
+  - White
   dice: '[1]'
   dice_value: 1
   secondary_dice: null
@@ -1542,7 +1634,8 @@
   - If Meekness leaves play, all moods suppressed by it stop being suppressed.
 - id: 7bd13526-68ea-5d37-b584-c20bd2a903ce
   name: Melancholy
-  color: Black
+  color:
+  - Black
   dice: '[3]'
   dice_value: 3
   secondary_dice: null
@@ -1558,7 +1651,8 @@
   - You are still allowed to play cards from your hand.
 - id: 3ac8d640-78f7-5350-af2c-e6b20dc3efcd
   name: Misery
-  color: Black
+  color:
+  - Black
   dice: '[2]'
   dice_value: 2
   secondary_dice: '[6][2]'
@@ -1569,7 +1663,8 @@
   - Imagination's color-changing effect does not affect the discard pile.
 - id: 779d7b9d-6274-5562-b4f0-17490f3ed9cb
   name: Neurosis
-  color: Blue
+  color:
+  - Blue
   dice: '[5]'
   dice_value: 5
   secondary_dice: null
@@ -1581,7 +1676,8 @@
   - You can't play Neurosis if you have no moods in play.
 - id: 104bd670-c691-5027-92a3-857c0ab2d600
   name: Nostalgia
-  color: Green
+  color:
+  - Green
   dice: '[0]'
   dice_value: 0
   secondary_dice: null
@@ -1604,7 +1700,8 @@
     card for Hurt Feelings before you play the additional card for Nostalgia.
 - id: 62f4c4f8-17b0-56bd-9bea-b7b5a249d815
   name: Obsession
-  color: Blue
+  color:
+  - Blue
   dice: '[3]'
   dice_value: 3
   secondary_dice: '[6]'
@@ -1615,7 +1712,8 @@
     is worth [6] if there are two white moods, two black moods, or a white mood and a black mood in play.
 - id: 56d76cdd-c074-5b74-87da-0eeba5c4b189
   name: Pacifism
-  color: White
+  color:
+  - White
   dice: '[1]'
   dice_value: 1
   secondary_dice: null
@@ -1638,7 +1736,8 @@
   - If this mood moves to another player, the suppressed card remains suppressed.
 - id: ca820fa0-f937-5767-8c39-602ceb1f90d7
   name: Panic
-  color: Blue
+  color:
+  - Blue
   dice: '[1]'
   dice_value: 1
   secondary_dice: null
@@ -1654,7 +1753,8 @@
     Panic to return your first Panic to your hand.
 - id: 054ee6cd-6020-52a8-9c27-fddfab15e15a
   name: Paranoia
-  color: Black
+  color:
+  - Black
   dice: '[2]'
   dice_value: 2
   secondary_dice: null
@@ -1669,7 +1769,8 @@
     one is the default method.
 - id: 86f85c09-449c-5910-b2c7-a2b201b1d91c
   name: Passion
-  color: Red
+  color:
+  - Red
   dice: '[0]'
   dice_value: 0
   secondary_dice: null
@@ -1684,7 +1785,8 @@
     to add all the extra combined scores together.
 - id: 5669120a-f526-57e1-8058-18892fc0c6e3
   name: Patience
-  color: White
+  color:
+  - White
   dice: '[5]'
   dice_value: 5
   secondary_dice: '[1]'
@@ -1694,7 +1796,8 @@
   - Patience never has a value of [5] during the turn you play it.
 - id: b6dc446c-1f97-53b6-bf68-a22212d2a7be
   name: Pity
-  color: Black
+  color:
+  - Black
   dice: '[3]'
   dice_value: 3
   secondary_dice: '[6]'
@@ -1705,7 +1808,8 @@
     worth [6] if there are two blue moods, two red moods, or a blue mood and a red mood in play.
 - id: efb6548b-b5a8-5838-85a1-46a3a10588ad
   name: Pride
-  color: White
+  color:
+  - White
   dice: '[1]'
   dice_value: 1
   secondary_dice: null
@@ -1732,7 +1836,8 @@
     resolves, they do not have the additional mood, but you already played Hate as your third card.
 - id: b79352ac-9763-5b78-9b29-ab6ad9c7d1d4
   name: Rage
-  color: Red
+  color:
+  - Red
   dice: '[2]'
   dice_value: 2
   secondary_dice: null
@@ -1745,7 +1850,8 @@
   - A second Rage (say you copied it with Creativity) can destroy the first Rage.
 - id: 106f0352-ec3c-5010-a1de-95b239d8b510
   name: Rationalization
-  color: Blue
+  color:
+  - Blue
   dice: '[3]'
   dice_value: 3
   secondary_dice: null
@@ -1761,7 +1867,8 @@
   - If a player's hand is empty, they do not pass anything. The passing of other players' hands still happens.
 - id: d9523ce1-c675-535f-bb11-568a8071f341
   name: Rebellion
-  color: Red
+  color:
+  - Red
   dice: '[2]'
   dice_value: 2
   secondary_dice: null
@@ -1776,7 +1883,8 @@
   - Another Rebellion (say you copy it with Creativity) can put the first Rebellion into the discard pile, just not itself.
 - id: 23a3bbb7-8cf1-5134-aafc-e3aa770b7f95
   name: Recklessness
-  color: Red
+  color:
+  - Red
   dice: '[0]'
   dice_value: 0
   secondary_dice: null
@@ -1804,7 +1912,8 @@
     it on the bottom of the deck and they would draw the card.
 - id: 1fdf8e18-91d2-5ddd-8424-60b2ebae4620
   name: Regret
-  color: Blue
+  color:
+  - Blue
   dice: '[4]'
   dice_value: 4
   secondary_dice: null
@@ -1819,7 +1928,8 @@
     target="_blank">Other Ways to Play</a>), you can't return a teammate's card to your hand as they are not an opponent.
 - id: 2bdb02e4-0bc2-5284-a677-b3a65e7f0cd1
   name: Rejection
-  color: Black
+  color:
+  - Black
   dice: '[0]'
   dice_value: 0
   secondary_dice: null
@@ -1833,7 +1943,8 @@
     inform you that the score can change.)'
 - id: 5bb834dc-ff02-5cc3-906c-082f84c099ed
   name: Repentance
-  color: White
+  color:
+  - White
   dice: '[2]'
   dice_value: 2
   secondary_dice: null
@@ -1859,7 +1970,8 @@
   - Repentance affects all moods in play with that value, including your cards.
 - id: df2c59a6-f27e-5eca-86d5-ccf8f494b780
   name: Sadness
-  color: Black
+  color:
+  - Black
   dice: '[0]'
   dice_value: 0
   secondary_dice: null
@@ -1870,7 +1982,8 @@
   - If this card is suppressed, it has a value of [0] regardless of how many cards are in the discard pile.
 - id: a13194ee-7d1f-55c3-9fa3-5526720c7d14
   name: Scorn
-  color: White
+  color:
+  - White
   dice: '[2]'
   dice_value: 2
   secondary_dice: null
@@ -1895,7 +2008,8 @@
     any mood in play.
 - id: 1686c912-df23-5563-b19a-5fea0f4b0f7f
   name: Self-Loathing
-  color: Black
+  color:
+  - Black
   dice: '[6]'
   dice_value: 6
   secondary_dice: null
@@ -1908,7 +2022,8 @@
   - You can't play Self-Loathing if you have no moods in play.
 - id: d0841099-0738-511c-9443-eeec90680774
   name: Serenity
-  color: Green
+  color:
+  - Green
   dice: '[3]'
   dice_value: 3
   secondary_dice: '[6]'
@@ -1920,7 +2035,8 @@
   - Serenity counts itself.
 - id: 0aae6735-b168-5421-8e5f-d178531ee9ee
   name: Shame
-  color: White
+  color:
+  - White
   dice: '[3]'
   dice_value: 3
   secondary_dice: null
@@ -1953,7 +2069,8 @@
     all the cards in play, you will need to discard a card that is actually white.
 - id: d5716284-61a1-5358-bd4b-26c8300cff87
   name: Shock
-  color: Red
+  color:
+  - Red
   dice: '[2]'
   dice_value: 2
   secondary_dice: null
@@ -1967,7 +2084,8 @@
   - You can choose to put any suppressed card in the discard pile with Shock as suppressed cards have a value of [0].
 - id: 25b4a3e2-1ef7-5974-af99-1b999ac7e1b8
   name: Sloth
-  color: Green
+  color:
+  - Green
   dice: '[3]'
   dice_value: 3
   secondary_dice: null
@@ -1981,7 +2099,8 @@
   - If this card is suppressed, it has a value of [0] regardless of how many cards are in your hand.
 - id: 526032f5-9a3a-509b-9ac0-bbfa981cb664
   name: Sneakiness
-  color: Blue
+  color:
+  - Blue
   dice: '[5]'
   dice_value: 5
   secondary_dice: null
@@ -2009,7 +2128,8 @@
     what happens.
 - id: d02816d3-4bee-52b1-9b30-287cfbc02090
   name: Spite
-  color: Black
+  color:
+  - Black
   dice: '[1]'
   dice_value: 1
   secondary_dice: null
@@ -2021,7 +2141,8 @@
   - One of those players may be you.
 - id: 58dc7772-a7a2-55e2-9de2-cb8922db8552
   name: Stubbornness
-  color: Red
+  color:
+  - Red
   dice: '[3]'
   dice_value: 3
   secondary_dice: null
@@ -2045,7 +2166,8 @@
     the turn, you still get to play your extra card.
 - id: c4e8807b-bd0e-5d47-ac2a-1d3f696c22d1
   name: Superiority
-  color: Black
+  color:
+  - Black
   dice: '[3]'
   dice_value: 3
   secondary_dice: '[6][1]'
@@ -2057,7 +2179,8 @@
     to be worth [6][1].
 - id: 6bd21141-3983-5973-93ad-17e94247839f
   name: Suspicion
-  color: Black
+  color:
+  - Black
   dice: '[3]'
   dice_value: 3
   secondary_dice: null
@@ -2072,7 +2195,8 @@
     players are discarding before they choose what to discard.
 - id: 8752bf70-15ac-54b7-a12f-136880ca896c
   name: Thrill
-  color: Red
+  color:
+  - Red
   dice: '[1]'
   dice_value: 1
   secondary_dice: null
@@ -2093,7 +2217,8 @@
     for Eagerness, which would allow you to play an additional card in the color of the card you played for Thrill.
 - id: 8799892f-340a-5564-b77a-49e5d49cbd64
   name: Tranquility
-  color: Green
+  color:
+  - Green
   dice: '[3]'
   dice_value: 3
   secondary_dice: '[6]'
@@ -2105,7 +2230,8 @@
   - Tranquility counts itself.
 - id: 85fc1687-af87-5871-b59e-d22318ea454d
   name: Triumph
-  color: Red
+  color:
+  - Red
   dice: '[3]'
   dice_value: 3
   secondary_dice: '[5]'
@@ -2118,7 +2244,8 @@
     Ways to Play</a>), this card is not worth [5] if your teammate went first.
 - id: 57c35873-f608-5ced-a126-370cd2b0c180
   name: Validation
-  color: White
+  color:
+  - White
   dice: '[1]'
   dice_value: 1
   secondary_dice: null
@@ -2140,7 +2267,8 @@
     for each mood with a [0] or [1] you play.
 - id: dfb32444-c2c1-5365-a824-3287134810a7
   name: Vanity
-  color: Black
+  color:
+  - Black
   dice: '[0]'
   dice_value: 0
   secondary_dice: null
@@ -2152,7 +2280,8 @@
   - If this card is suppressed, it has a value of [0] regardless of how many moods you have.
 - id: cd3be182-cd0f-5270-8309-a8e34392af78
   name: Vulnerability
-  color: Green
+  color:
+  - Green
   dice: '[1]'
   dice_value: 1
   secondary_dice: '[6][1]'
@@ -2167,7 +2296,8 @@
     anywhere that round.
 - id: 4deef06f-acb1-58a5-8873-d0134ab7ee2b
   name: Wonder
-  color: Green
+  color:
+  - Green
   dice: '[0]'
   dice_value: 0
   secondary_dice: null
@@ -2185,7 +2315,8 @@
     chosen color.
 - id: 9f296033-e3cb-54b1-8e65-50f8576eb66d
   name: Worry
-  color: Blue
+  color:
+  - Blue
   dice: '[3]'
   dice_value: 3
   secondary_dice: null
@@ -2203,7 +2334,8 @@
     that would change the value of Disgust from [3] to [6]. Disgust now can't be returned to its player's hand by Worry.
 - id: 4d661fad-f1ba-5b31-8efc-7a47138ae46b
   name: Wrath
-  color: Red
+  color:
+  - Red
   dice: '[0]'
   dice_value: 0
   secondary_dice: null
@@ -2217,7 +2349,8 @@
   - If you play a second Wrath (say you copy it with Creativity), the new Wrath will destroy the first Wrath.
 - id: b2cb83fc-60e5-5f5f-8402-cd264bb360a6
   name: Zeal
-  color: Red
+  color:
+  - Red
   dice: '[3]'
   dice_value: 3
   secondary_dice: null
@@ -2227,3 +2360,12 @@
   rulings_text:
   - '"May" means this effect is optional.'
   - If the deck is empty, the player will draw the card they just put on the bottom.
+- id: aacf1143-7ab8-54dc-9343-eb0fe6484edf
+  name: Hurt Feelings
+  color: []
+  dice: '[]'
+  dice_value: 0
+  secondary_dice: null
+  secondary_dice_value: null
+  rules_text: TODO
+  rulings_text: null
