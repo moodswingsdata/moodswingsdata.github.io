@@ -23,17 +23,53 @@ let currentQuery = "";
 // --- Initialization ---
 
 async function init() {
-  // Load data
-  const [cardsRes, printingsRes, editionsRes] = await Promise.all([
-    fetch("data/cards.json"),
-    fetch("data/printings.json"),
-    fetch("data/editions.json"),
-  ]);
+  const loadingStatus = document.getElementById("loading-status");
+  const searchForm = document.getElementById("search-form");
 
-  const cardsData = await cardsRes.json();
-  const printingsData = await printingsRes.json();
-  const editionsData = await editionsRes.json();
+  function markDone(id) {
+    const el = document.getElementById(id);
+    el.classList.add("load-done");
+    el.innerHTML = `✅ ${el.textContent.replace(/Loading/, "Loaded").replace("…", "")}`;
+  }
+
+  function markFailed(id, label) {
+    const el = document.getElementById(id);
+    el.classList.add("load-failed");
+    el.innerHTML = `Failed to load ${label} data`;
+  }
+
+  // Load data individually to track each
+  let cardsData, printingsData, editionsData;
+  let anyFailed = false;
+
+  const cardsPromise = fetch("data/cards.json")
+    .then((r) => { if (!r.ok) throw new Error(r.statusText); return r.json(); })
+    .then((data) => { cardsData = data; markDone("load-cards"); })
+    .catch(() => { anyFailed = true; markFailed("load-cards", "cards"); });
+
+  const printingsPromise = fetch("data/printings.json")
+    .then((r) => { if (!r.ok) throw new Error(r.statusText); return r.json(); })
+    .then((data) => { printingsData = data; markDone("load-printings"); })
+    .catch(() => { anyFailed = true; markFailed("load-printings", "printings"); });
+
+  const editionsPromise = fetch("data/editions.json")
+    .then((r) => { if (!r.ok) throw new Error(r.statusText); return r.json(); })
+    .then((data) => { editionsData = data; markDone("load-editions"); })
+    .catch(() => { anyFailed = true; markFailed("load-editions", "editions"); });
+
+  await Promise.all([cardsPromise, printingsPromise, editionsPromise]);
+
+  if (anyFailed) {
+    return;
+  }
+
   initSearch(cardsData, printingsData, editionsData);
+
+  // Replace loading indicator with search form
+  loadingStatus.classList.add("hidden");
+  searchForm.classList.remove("hidden");
+  const suggestions = document.querySelector(".suggestions");
+  if (suggestions) suggestions.classList.remove("hidden");
 
   // Set up event listeners
   document.getElementById("search-form").addEventListener("submit", onSubmit);

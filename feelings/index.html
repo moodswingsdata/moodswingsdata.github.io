@@ -14,16 +14,21 @@
   <div id="app">
     <header id="header" class="centered">
       <h1 class="logo"><a href="#" id="logo-link"><img src="feelings-logo.png" alt="Feelings"></a><small class="tagline">A search engine for <em>Mood Swings</em> cards</small></h1>
-      <form id="search-form">
+      <form id="search-form" class="hidden">
         <input type="text" id="search-input" placeholder="Search cards..." autocomplete="off" autofocus>
         <button type="submit" id="search-btn">Search</button>
       </form>
+      <div id="loading-status">
+        <div id="load-cards"><span class="spinner"></span> Waiting for cards…</div>
+        <div id="load-printings"><span class="spinner"></span> Waiting for printings…</div>
+        <div id="load-editions"><span class="spinner"></span> Waiting for editions…</div>
+      </div>
     </header>
 
     <main id="main">
       <section id="welcome">
         <p class="tagline">A search engine for <em>Mood Swings</em> cards</p>
-        <div class="suggestions">
+        <div class="suggestions hidden">
           <h3>Try a search</h3>
           <ul>
             <li><a href="#q=r%3Acommon%20c%3Awhite">r:common c:white</a></li>
@@ -51,10 +56,10 @@
 
     <div id="popover" class="hidden">
       <div class="popover-backdrop"></div>
+      <button class="popover-nav popover-prev" aria-label="Previous card">‹</button>
+      <button class="popover-nav popover-next" aria-label="Next card">›</button>
       <div class="popover-content">
         <button class="popover-close" aria-label="Close">×</button>
-        <button class="popover-nav popover-prev" aria-label="Previous card">‹</button>
-        <button class="popover-nav popover-next" aria-label="Next card">›</button>
         <div class="popover-body">
           <div class="popover-image"></div>
           <div class="popover-details"></div>
