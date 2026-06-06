@@ -1,4 +1,14 @@
 {
-    "cards": "/msw/cards.yaml",
-    "printings": "/msw/printings.yaml"
+    "cards": {
+        "yaml": "/msw/cards.yaml",
+        "json": "/feelings/data/cards.json"
+    },
+    "printings": {
+        "yaml": "/msw/printings.yaml",
+        "json": "/feelings/data/printings.json"
+    },
+    "editions": {
+        "yaml": "/msw/editions.yaml",
+        "json": "/feelings/data/editions.json"
+    }
 }

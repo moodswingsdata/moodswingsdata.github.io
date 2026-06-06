@@ -179,6 +179,13 @@ function matchesFilter(card, printing, filter, errors) {
     if (operator === ":" && (lowerValue === "none" || lowerValue === "colorless")) {
       return card.color.length === 0;
     }
+    // Expand WUBRG shorthand
+    const expanded = expandColorShorthand(lowerValue);
+    if (expanded) {
+      // Multi-color shorthand (e.g. "wu" -> White and Blue): card must have all specified colors
+      const cardColors = card.color.map(c => c.toLowerCase());
+      return expanded.every(color => cardColors.includes(color));
+    }
     return matchValue(card.color, operator, value, valueType, true);
   }
   if (field === "dice") {
@@ -241,6 +248,29 @@ function matchesFilter(card, printing, filter, errors) {
   }
 
   return false;
+}
+
+const COLOR_SHORTHAND = {
+  w: "white",
+  u: "blue",
+  b: "black",
+  r: "red",
+  g: "green",
+};
+
+/**
+ * Expand WUBRG shorthand to full color names.
+ * Returns an array of color names if the value is entirely WUBRG letters,
+ * or null if it's not a valid shorthand.
+ */
+function expandColorShorthand(lowerValue) {
+  if (lowerValue.length === 0) return null;
+  const colors = [];
+  for (const ch of lowerValue) {
+    if (!COLOR_SHORTHAND[ch]) return null;
+    colors.push(COLOR_SHORTHAND[ch]);
+  }
+  return colors;
 }
 
 function matchValue(fieldValue, operator, queryValue, valueType, usePrefix) {
