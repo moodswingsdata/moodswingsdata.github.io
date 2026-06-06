@@ -1475,7 +1475,7 @@
   collector_number: 134
   treatment: Foil
   artist: Mark Rosewater
-  card_image_url: null
+  card_image_url: https://media.wizards.com/2026/msw/xABg1Js9Np/en_8674b312121.webp
 - id: b378be9c-7231-5a05-9625-4c86b867f66c
   card_id: aacf1143-7ab8-54dc-9343-eb0fe6484edf
   edition_id: 7123a285-e0f7-51c5-86c6-f007b2184eb0
@@ -1484,6 +1484,6 @@
   rarity: null
   dice_color: null
   collector_number: 9999
-  treatment: Reminder
-  artist: null
-  card_image_url: null
+  treatment: Helper
+  artist: Mike Dringenberg
+  card_image_url: https://media.wizards.com/2026/msw/xABg1Js9Np/en_SDbCBoXR0F.webp
