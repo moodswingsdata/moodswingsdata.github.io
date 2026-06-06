@@ -86,7 +86,7 @@
       <tr><th>Keyword</th><th>Aliases</th><th>Description</th></tr>
       <tr><td>name</td><td>n</td><td>Card name</td></tr>
       <tr><td>id</td><td></td><td>Card or printing ID</td></tr>
-      <tr><td>color</td><td>c</td><td>Card color (White, Blue, Black, Red, Green, None/Colorless)</td></tr>
+      <tr><td>color</td><td>c</td><td>Card color (White, Blue, Black, Red, Green, None/Colorless). Accepts WUBRG shorthand.</td></tr>
       <tr><td>dice</td><td>d</td><td>Primary dice notation</td></tr>
       <tr><td>dice_value</td><td>dval</td><td>Sum of primary dice pips (numeric)</td></tr>
       <tr><td>secondary_dice</td><td>dd, 2dice</td><td>Secondary dice notation</td></tr>
@@ -122,13 +122,25 @@
       <li><strong>textprintings</strong> — All printings, names only</li>
     </ul>
 
+    <h2>Color Shorthand (WUBRG)</h2>
+    <p>Colors can be specified using single-letter shorthand familiar to <em>Magic: The Gathering</em> players:</p>
+    <table>
+      <tr><th>Letter</th><th>Color</th></tr>
+      <tr><td>W</td><td>White</td></tr>
+      <tr><td>U</td><td>Blue</td></tr>
+      <tr><td>B</td><td>Black</td></tr>
+      <tr><td>R</td><td>Red</td></tr>
+      <tr><td>G</td><td>Green</td></tr>
+    </table>
+    <p>Combine letters for multicolor: <code>c:wu</code> finds cards that are both White and Blue.</p>
+
     <h2>Partial Matching</h2>
-    <p>The <code>:</code> operator does substring matching, so abbreviations work:</p>
+    <p>The <code>:</code> operator does prefix matching on color and rarity fields, so abbreviations work:</p>
     <ul>
-      <li><code>c:w</code> → White</li>
-      <li><code>c:bl</code> → Blue and Black</li>
+      <li><code>c:whi</code> → White</li>
       <li><code>r:m</code> → Mythic Rare</li>
     </ul>
+    <p>For color specifically, prefer WUBRG shorthand over abbreviations (e.g. <code>c:u</code> instead of <code>c:bl</code>).</p>
 
     <h2>Examples</h2>
     <ul>

@@ -221,7 +221,7 @@
       const { ast } = parseQuery("c:wh");
       const { results } = executeSearch(ast);
       assert(results.length > 0, "search 'c:wh': has results");
-      assert(results.every(r => r.card.color === "White"), "search 'c:wh': all results are White");
+      assert(results.every(r => r.card.color.includes("White")), "search 'c:wh': all results are White");
     }
 
     // Rarity search
@@ -237,7 +237,7 @@
       const { ast } = parseQuery("c:white r:common");
       const { results } = executeSearch(ast);
       assert(results.length > 0, "search 'c:white r:common': has results");
-      assert(results.every(r => r.card.color === "White" && r.printing.rarity === "Common"),
+      assert(results.every(r => r.card.color.includes("White") && r.printing.rarity === "Common"),
         "search 'c:white r:common': all white and common");
     }
 
@@ -246,7 +246,7 @@
       const { ast } = parseQuery("-c:white");
       const { results } = executeSearch(ast);
       assert(results.length > 0, "search '-c:white': has results");
-      assert(results.every(r => r.card.color !== "White"), "search '-c:white': no white cards");
+      assert(results.every(r => !r.card.color.includes("White")), "search '-c:white': no white cards");
     }
 
     // Numeric: dice_value > 5
@@ -262,7 +262,7 @@
       const { ast } = parseQuery("c:white or c:blue");
       const { results } = executeSearch(ast);
       assert(results.length > 0, "search 'c:white or c:blue': has results");
-      assert(results.every(r => r.card.color === "White" || r.card.color === "Blue"),
+      assert(results.every(r => r.card.color.includes("White") || r.card.color.includes("Blue")),
         "search 'c:white or c:blue': all white or blue");
     }
 
@@ -276,6 +276,38 @@
       const { ast } = parseQuery("c:colorless");
       const { results } = executeSearch(ast);
       assert(results.every(r => r.card.color.length === 0), "search 'c:colorless': all colorless");
+    }
+
+    // Color: WUBRG shorthand
+    {
+      const { ast } = parseQuery("c:u");
+      const { results } = executeSearch(ast);
+      assert(results.length > 0, "search 'c:u': has results");
+      assert(results.every(r => r.card.color.includes("Blue")), "search 'c:u': all results are Blue");
+    }
+    {
+      const { ast } = parseQuery("c:w");
+      const { results } = executeSearch(ast);
+      assert(results.length > 0, "search 'c:w': has results");
+      assert(results.every(r => r.card.color.includes("White")), "search 'c:w': all results are White");
+    }
+    {
+      const { ast } = parseQuery("c:b");
+      const { results } = executeSearch(ast);
+      assert(results.length > 0, "search 'c:b': has results");
+      assert(results.every(r => r.card.color.includes("Black")), "search 'c:b': all results are Black");
+    }
+    {
+      const { ast } = parseQuery("c:r");
+      const { results } = executeSearch(ast);
+      assert(results.length > 0, "search 'c:r': has results");
+      assert(results.every(r => r.card.color.includes("Red")), "search 'c:r': all results are Red");
+    }
+    {
+      const { ast } = parseQuery("c:g");
+      const { results } = executeSearch(ast);
+      assert(results.length > 0, "search 'c:g': has results");
+      assert(results.every(r => r.card.color.includes("Green")), "search 'c:g': all results are Green");
     }
 
     // Sort
