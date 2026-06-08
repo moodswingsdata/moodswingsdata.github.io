@@ -319,6 +319,14 @@ function openPopover(index) {
     html += `<div class="rules-text">${card.rules_text}</div>`;
   }
 
+  if (card.rulings_text && card.rulings_text.length > 0) {
+    html += `<details class="rulings"><summary>Rulings</summary><ul>`;
+    for (const ruling of card.rulings_text) {
+      html += `<li>${escapeHtml(ruling)}</li>`;
+    }
+    html += `</ul></details>`;
+  }
+
   // Other printings
   const allPrintings = getPrintingsForCard(card.id);
   if (allPrintings.length > 1) {
@@ -419,6 +427,14 @@ function showPopoverForResult(result) {
 
   if (card.rules_text) {
     html += `<div class="rules-text">${card.rules_text}</div>`;
+  }
+
+  if (card.rulings_text && card.rulings_text.length > 0) {
+    html += `<details class="rulings"><summary>Rulings</summary><ul>`;
+    for (const ruling of card.rulings_text) {
+      html += `<li>${escapeHtml(ruling)}</li>`;
+    }
+    html += `</ul></details>`;
   }
 
   const allPrintings = getPrintingsForCard(card.id);

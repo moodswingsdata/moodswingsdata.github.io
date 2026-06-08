@@ -450,6 +450,27 @@ a:hover {
   line-height: 1.6;
 }
 
+.popover-details .rulings {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+}
+
+.popover-details .rulings summary {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.popover-details .rulings ul {
+  margin: 0.5rem 0 0 1.25rem;
+  padding: 0;
+  max-height: 12rem;
+  overflow-y: auto;
+}
+
+.popover-details .rulings li {
+  margin-bottom: 0.4rem;
+}
+
 .popover-details .other-printings {
   margin-top: 1rem;
   font-size: 0.85rem;
@@ -485,6 +506,10 @@ a:hover {
   }
   .popover-nav {
     display: none;
+  }
+  .popover-details .rulings ul {
+    max-height: none;
+    overflow-y: visible;
   }
   #results-grid {
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
