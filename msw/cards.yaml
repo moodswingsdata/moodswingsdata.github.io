@@ -70,20 +70,6 @@
   - Copying an Anger with Duplicity (the effect happens twice) does not allow you to put a card with over a [5] value into
     the discard pile. For example, if your opponent has Boredom, worth [4], and Generosity, worth [6], you can't put them
     both into the discard pile. Each instance of Anger has to be applied separately.
-- id: a843cb49-9be8-570d-84cf-76d57511dbf2
-  name: Animosity
-  color:
-  - Red
-  dice: '[3]'
-  dice_value: 3
-  secondary_dice: '[5]'
-  secondary_dice_value: 5
-  rules_text: <strong>While in play</strong> — This mood's value is [5] if any opponent has three or more cards in hand.
-  rulings_text:
-  - In a team game (see <a href="https://magic.wizards.com/en/news/feature/other-ways-to-play-mood-swings" target="_blank">Other
-    Ways to Play</a>), this card does not care about the number of cards in a teammate's hand.
-  - In a game with three or more players, only one opponent needs to have three or more cards for Animosity to have a value
-    of [5].
 - id: 34f674cb-cec1-505e-b7fb-ae5bcc6ff674
   name: Angst
   color:
@@ -109,6 +95,20 @@
   - You can play that additional card for the rest of your turn. If multiple cards grant you additional cards, those can be
     played in any order. For example, let's say you have Hurt Feelings and play Angst, choosing to put a card in the discard
     pile. You may first play the additional card for Hurt Feelings before you play the additional card for Angst.
+- id: a843cb49-9be8-570d-84cf-76d57511dbf2
+  name: Animosity
+  color:
+  - Red
+  dice: '[3]'
+  dice_value: 3
+  secondary_dice: '[5]'
+  secondary_dice_value: 5
+  rules_text: <strong>While in play</strong> — This mood's value is [5] if any opponent has three or more cards in hand.
+  rulings_text:
+  - In a team game (see <a href="https://magic.wizards.com/en/news/feature/other-ways-to-play-mood-swings" target="_blank">Other
+    Ways to Play</a>), this card does not care about the number of cards in a teammate's hand.
+  - In a game with three or more players, only one opponent needs to have three or more cards for Animosity to have a value
+    of [5].
 - id: 375c17d4-71b2-558f-a49e-66fc69001c3c
   name: Anxiety
   color:
@@ -1367,6 +1367,18 @@
     is now only one black card in play. Hostility would now be able to put Discipline into the discard pile.
   - You can't combine the [3] value between the two cards, meaning, for instance, that you couldn't put one card with a value
     of [6] into the discard pile.
+- id: aacf1143-7ab8-54dc-9343-eb0fe6484edf
+  name: Hurt Feelings
+  color: []
+  dice: null
+  dice_value: 0
+  secondary_dice: null
+  secondary_dice_value: 0
+  rules_text: '<em>(In a 3+ player game, at the end of each round, the player with the lowest score this round gets Hurt Feelings
+    for the next round. If there''s a tie, whoever took a turn latest this round wins the tie.)</em>
+
+    This round, you may play an additional mood during your turn.'
+  rulings_text: null
 - id: ea760944-2431-508e-b88f-4cb6b0deefc5
   name: Idealism
   color:
@@ -2360,17 +2372,3 @@
   rulings_text:
   - '"May" means this effect is optional.'
   - If the deck is empty, the player will draw the card they just put on the bottom.
-- id: aacf1143-7ab8-54dc-9343-eb0fe6484edf
-  name: Hurt Feelings
-  color: []
-  dice: '[]'
-  dice_value: 0
-  secondary_dice: null
-  secondary_dice_value: null
-  rules_text: '<em>(In a 3+ player game, at the end of each round, the player with the lowest score this round gets Hurt Feelings
-    for the next round. If there''s a tie, whoever took a turn latest this round wins the tie.)</em>
-
-    This round, you may play an additional mood during your turn.
-
-    '
-  rulings_text: null
