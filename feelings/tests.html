@@ -19,7 +19,7 @@
   <h1>Parser Tests</h1>
   <div id="output"></div>
   <script type="module">
-    import { parseQuery, KEYWORD_MAP, PRINTING_FIELDS, NUMERIC_FIELDS, DIRECTIVE_FIELDS } from "./parser.js";
+    import { parseQuery, summarizeQuery, KEYWORD_MAP, PRINTING_FIELDS, NUMERIC_FIELDS, DIRECTIVE_FIELDS } from "./parser.js";
     import { initSearch, executeSearch, getPrintingsForCard, getEditionForPrinting } from "./search.js";
 
     const output = document.getElementById("output");
@@ -169,8 +169,50 @@
     // Unknown keyword
     {
       const { ast, errors } = parseQuery("xyz:foo");
-      assertEq(ast.groups[0].fragments[0].field, "name", "unknown keyword falls back to name");
-      assert(errors.length > 0, "unknown keyword produces error");
+      assertEq(ast.groups[0].fragments[0].invalid, true, "unknown keyword is marked invalid");
+      assertEq(errors.length, 0, "unknown keyword does not produce a parser error");
+    }
+
+    // Query summaries
+    {
+      const { ast } = parseQuery("c:w r:c");
+      assertEq(summarizeQuery(ast), "Color is white and rarity is common", "summary: valid AND query");
+    }
+    {
+      const { ast } = parseQuery("c:w r<=u");
+      assertEq(summarizeQuery(ast), "Color is white and rarity is uncommon or less", "summary: rarity ordering");
+    }
+    {
+      const { ast } = parseQuery("c:w foo:bar");
+      assertEq(summarizeQuery(ast), "Color is white ('foo' is not a valid search term)", "summary: mixed valid and invalid");
+    }
+    {
+      const { ast } = parseQuery("love as:printings sort:name");
+      assertEq(summarizeQuery(ast), 'Name contains "love", show results as printings, and sort by name', "summary: includes directives");
+    }
+    {
+      const { ast } = parseQuery("as:textprintings sort:-dice_value");
+      assertEq(summarizeQuery(ast), "Show results as text printings and sort by dice value descending", "summary: directive-only query");
+    }
+    {
+      const { ast } = parseQuery("sort:dval");
+      assertEq(summarizeQuery(ast), "Sort by dice value", "summary: sort alias resolves");
+    }
+    {
+      const { ast } = parseQuery("sort:custom_field");
+      assertEq(summarizeQuery(ast), "Sort by custom field", "summary: sort field underscores are humanized");
+    }
+    {
+      const { ast } = parseQuery("sort:");
+      assertEq(summarizeQuery(ast), "Sort results", "summary: empty sort directive");
+    }
+    {
+      const { ast } = parseQuery("as:");
+      assertEq(summarizeQuery(ast), "Show results as cards", "summary: empty as directive");
+    }
+    {
+      const { ast } = parseQuery("foo:bar baz:bat");
+      assertEq(summarizeQuery(ast), "All terms ignored ('foo' and 'baz' are not valid search terms)", "summary: all invalid terms");
     }
 
     // All keyword aliases resolve
@@ -231,6 +273,14 @@
       assert(results.length > 0, "search 'r:common': has results");
       assert(results.every(r => r.printing.rarity === "Common"), "search 'r:common': all Common");
     }
+    {
+      const { ast } = parseQuery("r<=u");
+      const { results } = executeSearch(ast);
+      assert(results.length > 0, "search 'r<=u': has results");
+      assert(results.some(r => r.printing.rarity === "Common"), "search 'r<=u': includes common results");
+      assert(results.every(r => r.printing.rarity === "Common" || r.printing.rarity === "Uncommon"),
+        "search 'r<=u': all uncommon or less");
+    }
 
     // AND: color + rarity
     {
@@ -239,6 +289,13 @@
       assert(results.length > 0, "search 'c:white r:common': has results");
       assert(results.every(r => r.card.color.includes("White") && r.printing.rarity === "Common"),
         "search 'c:white r:common': all white and common");
+    }
+    {
+      const { ast: validAst } = parseQuery("c:white");
+      const { ast: mixedAst } = parseQuery("c:white foo:bar");
+      const validResults = executeSearch(validAst).results.map(r => r.card.id);
+      const mixedResults = executeSearch(mixedAst).results.map(r => r.card.id);
+      assertEq(mixedResults, validResults, "search ignores invalid terms while keeping valid filters");
     }
 
     // Negation

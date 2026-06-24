@@ -237,6 +237,11 @@ a:hover {
   font-size: 0.9rem;
 }
 
+#query-info {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
 #error-info {
   background: rgba(224, 85, 85, 0.1);
   border: 1px solid var(--error);

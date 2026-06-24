@@ -300,12 +300,13 @@ function visitKeyedFragment(node, negated) {
   if (!field) {
     return {
       type: "fragment",
-      field: "name",
-      operator: ":",
-      value: rawKeyword,
-      valueType: "string",
+      field: null,
+      operator,
+      value,
+      valueType,
       negated,
-      error: `Unknown keyword "${rawKeyword}"`,
+      invalid: true,
+      rawKeyword,
     };
   }
 
@@ -362,16 +363,229 @@ export function parseQuery(input) {
 
   const ast = buildAST(cst);
 
-  // Collect any fragment-level errors
-  for (const group of ast.groups) {
-    for (const frag of group.fragments) {
-      if (frag.error) {
-        errors.push({ message: frag.error });
-      }
-    }
-  }
-
   return { ast, errors };
 }
 
-export { KEYWORD_MAP, PRINTING_FIELDS, NUMERIC_FIELDS, DIRECTIVE_FIELDS };
+const FIELD_LABELS = {
+  name: "name",
+  id: "ID",
+  color: "color",
+  dice: "dice",
+  dice_value: "dice value",
+  secondary_dice: "secondary dice",
+  secondary_dice_value: "secondary dice value",
+  rules_text: "rules text",
+  rulings_text: "rulings text",
+  frame: "frame",
+  reminder_icon: "reminder icon",
+  rarity: "rarity",
+  dice_color: "dice color",
+  collector_number: "collector number",
+  set: "set",
+  treatment: "treatment",
+  artist: "artist",
+};
+
+const AS_LABELS = {
+  cards: "cards",
+  printings: "printings",
+  text: "text",
+  textprintings: "text printings",
+};
+const DEFAULT_AS_VALUE = "cards";
+
+const COLOR_LABELS = {
+  w: "white",
+  u: "blue",
+  b: "black",
+  r: "red",
+  g: "green",
+};
+
+const RARITY_ORDER = { common: 0, uncommon: 1, rare: 2, "mythic rare": 3 };
+const RARITY_NAMES = Object.keys(RARITY_ORDER);
+
+const RARITY_ALIASES = {
+  c: "common",
+  common: "common",
+  u: "uncommon",
+  uncommon: "uncommon",
+  r: "rare",
+  rare: "rare",
+  m: "mythic rare",
+  my: "mythic rare",
+  mythic: "mythic rare",
+  "mythic rare": "mythic rare",
+};
+
+function normalizeColorLabel(value) {
+  const lowerValue = value.toLowerCase();
+  if (lowerValue === "none" || lowerValue === "colorless") return "colorless";
+  if (lowerValue.length > 0) {
+    const colors = [];
+    for (const ch of lowerValue) {
+      if (!COLOR_LABELS[ch]) return lowerValue;
+      colors.push(COLOR_LABELS[ch]);
+    }
+    return colors.join(" and ");
+  }
+  return lowerValue;
+}
+
+function normalizeRarityLabel(value) {
+  const lowerValue = value.toLowerCase();
+  if (RARITY_ALIASES[lowerValue]) return RARITY_ALIASES[lowerValue];
+  const label = RARITY_NAMES.find((candidate) =>
+    candidate.startsWith(lowerValue)
+  );
+  if (label) return label;
+  return lowerValue;
+}
+
+function formatValue(field, value, valueType) {
+  if (valueType === "regex") return `/${value}/`;
+  if (field === "color") return normalizeColorLabel(value);
+  if (field === "rarity") return normalizeRarityLabel(value);
+  if (field === "name" || field === "rules_text" || field === "rulings_text") {
+    return `"${value}"`;
+  }
+  return value.toLowerCase();
+}
+
+function formatFieldLabel(field) {
+  return FIELD_LABELS[field] || field.replace(/_/g, " ");
+}
+
+function formatSortValue(value) {
+  const descending = value.startsWith("-");
+  const rawField = descending ? value.slice(1) : value;
+  const resolvedField = KEYWORD_MAP[rawField.toLowerCase()] || rawField;
+  const label = formatFieldLabel(resolvedField);
+  return descending ? `${label} descending` : label;
+}
+
+function describeDirective(fragment) {
+  if (fragment.field === "as") {
+    const rawValue = fragment.value;
+    const value = rawValue && rawValue.length > 0
+      ? rawValue.toLowerCase()
+      : DEFAULT_AS_VALUE;
+    const label = AS_LABELS[value] || value;
+    return `show results as ${label}`;
+  }
+  if (fragment.field === "sort") {
+    if (!fragment.value) return "sort results";
+    return `sort by ${formatSortValue(fragment.value)}`;
+  }
+  return null;
+}
+
+function describeOperator(field, operator, value, valueType, negated) {
+  const formattedValue = formatValue(field, value, valueType);
+  const textField = field === "name" || field === "rules_text" || field === "rulings_text" || field === "artist";
+
+  if (valueType === "regex") {
+    return negated ? `does not match ${formattedValue}` : `matches ${formattedValue}`;
+  }
+
+  if (operator === ">") {
+    return negated ? `is not greater than ${formattedValue}` : `is greater than ${formattedValue}`;
+  }
+  if (operator === "<") {
+    return negated ? `is not less than ${formattedValue}` : `is less than ${formattedValue}`;
+  }
+  if (operator === ">=") {
+    return negated ? `is not ${formattedValue} or greater` : `is ${formattedValue} or greater`;
+  }
+  if (operator === "<=") {
+    return negated ? `is not ${formattedValue} or less` : `is ${formattedValue} or less`;
+  }
+  if (operator === "=") {
+    return negated ? `is not ${formattedValue}` : `is ${formattedValue}`;
+  }
+  if (textField) {
+    return negated ? `does not contain ${formattedValue}` : `contains ${formattedValue}`;
+  }
+  return negated ? `is not ${formattedValue}` : `is ${formattedValue}`;
+}
+
+function describeFragment(fragment) {
+  if (fragment.invalid || !fragment.field) {
+    return null;
+  }
+  if (DIRECTIVE_FIELDS.has(fragment.field)) {
+    return describeDirective(fragment);
+  }
+  const label = formatFieldLabel(fragment.field);
+  return `${label} ${describeOperator(fragment.field, fragment.operator, fragment.value, fragment.valueType, fragment.negated)}`;
+}
+
+function formatConjunctiveList(values) {
+  if (values.length === 0) return "";
+  if (values.length === 1) return values[0];
+  if (values.length === 2) return `${values[0]} and ${values[1]}`;
+  return `${values.slice(0, -1).join(", ")}, and ${values[values.length - 1]}`;
+}
+
+function formatInvalidKeywords(invalidKeywords) {
+  const keywords = invalidKeywords.map((keyword) => `'${keyword}'`);
+  if (keywords.length === 1) {
+    return `${keywords[0]} is not a valid search term`;
+  }
+  return `${formatConjunctiveList(keywords)} are not valid search terms`;
+}
+
+function capitalizeFirst(text) {
+  if (!text) return text;
+  return text[0].toUpperCase() + text.slice(1);
+}
+
+export function summarizeQuery(ast) {
+  if (!ast || !ast.groups) return "";
+
+  const invalidKeywords = [];
+  const groupDescriptions = [];
+  const directiveDescriptions = [];
+
+  for (const group of ast.groups) {
+    const fragmentDescriptions = [];
+    for (const fragment of group.fragments) {
+      if (fragment.invalid && fragment.rawKeyword) {
+        invalidKeywords.push(fragment.rawKeyword);
+        continue;
+      }
+      if (DIRECTIVE_FIELDS.has(fragment.field)) {
+        const description = describeFragment(fragment);
+        if (description) {
+          directiveDescriptions.push(description);
+        }
+        continue;
+      }
+      const description = describeFragment(fragment);
+      if (description) {
+        fragmentDescriptions.push(description);
+      }
+    }
+    if (fragmentDescriptions.length > 0) {
+      groupDescriptions.push(formatConjunctiveList(fragmentDescriptions));
+    }
+  }
+
+  const baseDescription = groupDescriptions.join(" or ");
+  const validParts = [];
+  if (groupDescriptions.length > 0) validParts.push(baseDescription);
+  validParts.push(...directiveDescriptions);
+  const validDescription = capitalizeFirst(formatConjunctiveList(validParts));
+  const invalidDescription = invalidKeywords.length > 0
+    ? `(${formatInvalidKeywords(invalidKeywords)})`
+    : "";
+
+  if (!validDescription) {
+    if (!invalidDescription) return "";
+    return `All terms ignored ${invalidDescription}`;
+  }
+
+  return invalidDescription ? `${validDescription} ${invalidDescription}` : validDescription;
+}
+
+export { KEYWORD_MAP, PRINTING_FIELDS, NUMERIC_FIELDS, DIRECTIVE_FIELDS, RARITY_ALIASES, RARITY_NAMES, RARITY_ORDER, normalizeRarityLabel };

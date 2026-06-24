@@ -4,7 +4,7 @@
  * Handles hash routing, result rendering, pagination, and popovers.
  */
 
-import { parseQuery } from "./parser.js";
+import { parseQuery, summarizeQuery } from "./parser.js";
 import {
   initSearch,
   executeSearch,
@@ -19,6 +19,7 @@ let currentResults = [];
 let currentDirectives = {};
 let currentPage = 1;
 let currentQuery = "";
+let currentQuerySummary = "";
 
 // --- Initialization ---
 
@@ -129,12 +130,12 @@ function onHashChange() {
 }
 
 function updateHash(query, page, cardId) {
-  const params = new URLSearchParams();
-  if (query) params.set("q", query);
-  if (page && page > 1) params.set("p", String(page));
-  if (cardId) params.set("card", cardId);
+  const parts = [];
+  if (query) parts.push(`q=${encodeURIComponent(query)}`);
+  if (page && page > 1) parts.push(`p=${encodeURIComponent(String(page))}`);
+  if (cardId) parts.push(`card=${encodeURIComponent(cardId)}`);
 
-  const newHash = params.toString();
+  const newHash = parts.join("&");
   if (window.location.hash.slice(1) !== newHash) {
     window.location.hash = newHash;
   }
@@ -151,16 +152,31 @@ function runSearch(query) {
     currentResults = results;
     currentDirectives = directives;
     currentPage = 1;
+    currentQuerySummary = summarizeQuery(ast);
 
     const allErrors = [...parseErrors, ...searchErrors];
+    showQuerySummary(currentQuerySummary);
     showErrors(allErrors);
   } catch (err) {
     currentResults = [];
     currentDirectives = {};
+    currentQuerySummary = "";
+    showQuerySummary(currentQuerySummary);
     showErrors([{ message: "Search error: " + err.message }]);
     console.error("Search failed:", err);
   }
   transitionToResults();
+}
+
+function showQuerySummary(summary) {
+  const el = document.getElementById("query-info");
+  if (summary) {
+    el.classList.remove("hidden");
+    el.textContent = summary;
+  } else {
+    el.classList.add("hidden");
+    el.textContent = "";
+  }
 }
 
 function showErrors(errors) {
@@ -185,6 +201,9 @@ function showWelcome() {
   document.getElementById("search-input").value = "";
   currentQuery = "";
   currentResults = [];
+  currentQuerySummary = "";
+  showQuerySummary(currentQuerySummary);
+  showErrors([]);
 }
 
 function transitionToResults() {

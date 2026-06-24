@@ -4,7 +4,7 @@
  * Evaluates parsed query ASTs against loaded card and printing data.
  */
 
-import { PRINTING_FIELDS, NUMERIC_FIELDS, DIRECTIVE_FIELDS } from "./parser.js";
+import { PRINTING_FIELDS, NUMERIC_FIELDS, DIRECTIVE_FIELDS, RARITY_ORDER, normalizeRarityLabel } from "./parser.js";
 
 let cards = [];
 let printings = [];
@@ -72,6 +72,7 @@ export function executeSearch(ast) {
 
   for (const group of ast.groups) {
     for (const frag of group.fragments) {
+      if (frag.invalid) continue;
       if (DIRECTIVE_FIELDS.has(frag.field)) {
         if (frag.field === "sort") directives.sort = frag.value;
         if (frag.field === "as") directives.as = frag.value || "cards";
@@ -91,7 +92,7 @@ export function executeSearch(ast) {
 
   for (const group of ast.groups) {
     const filters = group.fragments.filter(
-      (f) => !DIRECTIVE_FIELDS.has(f.field)
+      (f) => !f.invalid && !DIRECTIVE_FIELDS.has(f.field)
     );
 
     if (filters.length === 0) continue;
@@ -224,6 +225,9 @@ function matchesFilter(card, printing, filter, errors) {
     return matchValue(printing.reminder_icon || "", operator, value, valueType);
   }
   if (field === "rarity") {
+    if (operator === ">" || operator === "<" || operator === ">=" || operator === "<=") {
+      return matchRarity(printing.rarity, operator, value);
+    }
     return matchValue(printing.rarity, operator, value, valueType, true);
   }
   if (field === "dice_color") {
@@ -348,6 +352,32 @@ function matchNumeric(fieldValue, operator, queryValue) {
   }
 }
 
+function matchRarity(fieldValue, operator, queryValue) {
+  const queryOrder = getRarityOrder(queryValue);
+  if (!fieldValue) return false;
+  const fieldOrder = RARITY_ORDER[fieldValue.toLowerCase()] ?? null;
+
+  if (queryOrder === null || fieldOrder === null) return false;
+
+  switch (operator) {
+    case ">":
+      return fieldOrder > queryOrder;
+    case "<":
+      return fieldOrder < queryOrder;
+    case ">=":
+      return fieldOrder >= queryOrder;
+    case "<=":
+      return fieldOrder <= queryOrder;
+    default:
+      return false;
+  }
+}
+
+function getRarityOrder(value) {
+  const rarityName = normalizeRarityLabel(value);
+  return RARITY_ORDER[rarityName] ?? null;
+}
+
 function substituteCardName(value, cardName) {
   return value.replace(/~/g, cardName);
 }
@@ -415,8 +445,7 @@ function getSortValue(result, field) {
   // Printing fields
   if (printing) {
     if (field === "rarity") {
-      const order = { Common: 0, Uncommon: 1, Rare: 2, "Mythic Rare": 3 };
-      return order[printing.rarity] ?? 0;
+    return printing.rarity ? (RARITY_ORDER[printing.rarity.toLowerCase()] ?? 0) : 0;
     }
     if (field === "collector_number" || field === "cn")
       return printing.collector_number;
