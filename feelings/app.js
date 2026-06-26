@@ -293,23 +293,11 @@ function goToPage(page) {
 
 let currentPopoverIndex = -1;
 
-function openPopover(index) {
-  currentPopoverIndex = index;
-  const { card, printing } = currentResults[index];
-
-  const popover = document.getElementById("popover");
-  popover.classList.remove("hidden");
-
-  // Image
-  const imageEl = popover.querySelector(".popover-image");
-  if (printing && printing.card_image_url) {
-    imageEl.innerHTML = `<img src="${escapeHtml(printing.card_image_url)}" alt="${escapeHtml(card.name)}">`;
-  } else {
-    imageEl.innerHTML = `<img src="missing.png" alt="${escapeHtml(card.name)}">`;
-  }
-
-  // Details
-  const detailsEl = popover.querySelector(".popover-details");
+/**
+ * Build the details HTML (metadata, rules, printed text, notes, errata,
+ * other printings) for a card + printing shown in the popover.
+ */
+function buildCardDetailsHtml(card, printing) {
   let html = `<h2>${escapeHtml(card.name)}</h2><dl>`;
   html += `<dt>Color</dt><dd>${escapeHtml(card.color)}</dd>`;
   html += `<dt>Dice</dt><dd>${escapeHtml(card.dice)}</dd>`;
@@ -331,6 +319,9 @@ function openPopover(index) {
     if (printing.treatment && printing.treatment !== "Standard") {
       html += `<dt>Treatment</dt><dd>${escapeHtml(printing.treatment)}</dd>`;
     }
+    if (printing.is_headliner) {
+      html += `<dt>Headliner</dt><dd>Yes</dd>`;
+    }
   }
   html += `</dl>`;
 
@@ -338,15 +329,23 @@ function openPopover(index) {
     html += `<div class="rules-text">${card.rules_text}</div>`;
   }
 
-  if (card.rulings_text && card.rulings_text.length > 0) {
-    html += `<details class="rulings"><summary>Rulings</summary><ul>`;
-    for (const ruling of card.rulings_text) {
-      html += `<li>${escapeHtml(ruling)}</li>`;
+  if (printing && printing.printed_rules_text) {
+    html += `<div class="printed-rules"><strong>As printed:</strong> ${printing.printed_rules_text}</div>`;
+  }
+
+  if (card.notes && card.notes.length > 0) {
+    html += `<details class="rulings"><summary>Notes</summary><ul>`;
+    for (const note of card.notes) {
+      html += `<li>${escapeHtml(note)}</li>`;
     }
     html += `</ul></details>`;
   }
 
-  // Other printings
+  const errata = card.errata || (printing && printing.errata) || null;
+  if (errata) {
+    html += `<div class="errata"><strong>Errata:</strong> ${escapeHtml(errata.note || "")}</div>`;
+  }
+
   const allPrintings = getPrintingsForCard(card.id);
   if (allPrintings.length > 1) {
     html += `<div class="other-printings"><strong>Other printings:</strong> `;
@@ -359,9 +358,27 @@ function openPopover(index) {
     html += `</div>`;
   }
 
-  detailsEl.innerHTML = html;
+  return html;
+}
 
-  // Handle printing links
+function openPopover(index) {
+  currentPopoverIndex = index;
+  const { card, printing } = currentResults[index];
+
+  const popover = document.getElementById("popover");
+  popover.classList.remove("hidden");
+
+  // Image
+  const imageEl = popover.querySelector(".popover-image");
+  if (printing && printing.card_image_url) {
+    imageEl.innerHTML = `<img src="${escapeHtml(printing.card_image_url)}" alt="${escapeHtml(card.name)}">`;
+  } else {
+    imageEl.innerHTML = `<img src="missing.png" alt="${escapeHtml(card.name)}">`;
+  }
+
+  // Details
+  const detailsEl = popover.querySelector(".popover-details");
+  detailsEl.innerHTML = buildCardDetailsHtml(card, printing);
   detailsEl.querySelectorAll("[data-printing-id]").forEach((a) => {
     a.addEventListener("click", (e) => {
       e.preventDefault();
@@ -420,55 +437,7 @@ function showPopoverForResult(result) {
   }
 
   const detailsEl = popover.querySelector(".popover-details");
-  let html = `<h2>${escapeHtml(card.name)}</h2><dl>`;
-  html += `<dt>Color</dt><dd>${escapeHtml(card.color)}</dd>`;
-  html += `<dt>Dice</dt><dd>${escapeHtml(card.dice)}</dd>`;
-  if (card.secondary_dice) {
-    html += `<dt>Secondary</dt><dd>${escapeHtml(card.secondary_dice)}</dd>`;
-  }
-  if (printing) {
-    html += `<dt>Rarity</dt><dd>${escapeHtml(printing.rarity)}</dd>`;
-    const edition = getEditionForPrinting(printing);
-    if (edition) {
-      html += `<dt>Set</dt><dd>${escapeHtml(edition.edition_name)} (${escapeHtml(edition.set_code)})</dd>`;
-    }
-    if (printing.collector_number != null) {
-      html += `<dt>#</dt><dd>${printing.collector_number}</dd>`;
-    }
-    if (printing._artist_str) {
-      html += `<dt>Artist</dt><dd>${escapeHtml(printing._artist_str)}</dd>`;
-    }
-    if (printing.treatment && printing.treatment !== "Standard") {
-      html += `<dt>Treatment</dt><dd>${escapeHtml(printing.treatment)}</dd>`;
-    }
-  }
-  html += `</dl>`;
-
-  if (card.rules_text) {
-    html += `<div class="rules-text">${card.rules_text}</div>`;
-  }
-
-  if (card.rulings_text && card.rulings_text.length > 0) {
-    html += `<details class="rulings"><summary>Rulings</summary><ul>`;
-    for (const ruling of card.rulings_text) {
-      html += `<li>${escapeHtml(ruling)}</li>`;
-    }
-    html += `</ul></details>`;
-  }
-
-  const allPrintings = getPrintingsForCard(card.id);
-  if (allPrintings.length > 1) {
-    html += `<div class="other-printings"><strong>Other printings:</strong> `;
-    for (const p of allPrintings) {
-      if (p.id === (printing && printing.id)) continue;
-      const pEdition = getEditionForPrinting(p);
-      const setLabel = pEdition ? pEdition.set_code : "?";
-      html += `<a href="#" data-printing-id="${p.id}">${escapeHtml(setLabel)} #${p.collector_number || "?"}</a> `;
-    }
-    html += `</div>`;
-  }
-
-  detailsEl.innerHTML = html;
+  detailsEl.innerHTML = buildCardDetailsHtml(card, printing);
 
   detailsEl.querySelectorAll("[data-printing-id]").forEach((a) => {
     a.addEventListener("click", (e) => {

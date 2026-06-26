@@ -409,11 +409,113 @@
       }), "search 'set:MSW': all from MSW");
     }
 
-    // Rules text search with tilde
+    // Notes search with tilde (legacy 'rul' alias still maps to notes)
     {
       const { ast } = parseQuery('rul:"Altruism is worth"');
+      assertEq(ast.groups[0].fragments[0].field, "notes", "rul alias resolves to notes field");
       const { results } = executeSearch(ast);
       assert(results.some(r => r.card.name === "Altruism"), "rul search: finds Altruism");
+    }
+
+    // notes/note keywords resolve to notes
+    {
+      const { ast } = parseQuery('note:"discard pile"');
+      assertEq(ast.groups[0].fragments[0].field, "notes", "note alias resolves to notes field");
+      const { results } = executeSearch(ast);
+      assert(results.length > 0, "note search: has results");
+    }
+
+    // timing search
+    {
+      const { ast } = parseQuery("timing:in_play");
+      assertEq(ast.groups[0].fragments[0].field, "timing", "timing keyword resolves");
+      const { results } = executeSearch(ast);
+      assert(results.length > 0, "timing:in_play has results");
+      assert(results.every(r => (r.card.timing || []).includes("in_play")),
+        "timing:in_play: all results have in_play timing");
+    }
+    // timing accepts spaces for underscores
+    {
+      const { ast } = parseQuery('timing:"after playing"');
+      const { results } = executeSearch(ast);
+      assert(results.length > 0, "timing 'after playing' (space form) has results");
+      assert(results.every(r => (r.card.timing || []).includes("after_playing")),
+        "timing space form matches after_playing");
+    }
+    // tm alias
+    {
+      const { ast } = parseQuery("tm:to_play");
+      assertEq(ast.groups[0].fragments[0].field, "timing", "tm alias resolves to timing");
+      const { results } = executeSearch(ast);
+      assert(results.length > 0, "tm:to_play has results");
+    }
+
+    // headliner search
+    {
+      const { ast } = parseQuery("headliner:yes");
+      assertEq(ast.groups[0].fragments[0].field, "is_headliner", "headliner resolves to is_headliner");
+      const { results } = executeSearch(ast);
+      assert(results.length > 0, "headliner:yes has results");
+      assert(results.every(r => r.printing && r.printing.is_headliner === true),
+        "headliner:yes: all results are headliners");
+    }
+    // headliner empty value means true
+    {
+      const { ast } = parseQuery("hl:");
+      const { results } = executeSearch(ast);
+      assert(results.every(r => r.printing && r.printing.is_headliner === true),
+        "hl: (empty) returns headliners");
+    }
+    // negated headliner excludes the headliner
+    {
+      const { ast } = parseQuery("-headliner:yes");
+      const { results } = executeSearch(ast);
+      assert(results.length > 0, "-headliner:yes has results");
+      assert(results.every(r => !(r.printing && r.printing.is_headliner)),
+        "-headliner:yes: no headliners");
+    }
+
+    // printed rules text search
+    {
+      const { ast } = parseQuery("printedrules:choose");
+      assertEq(ast.groups[0].fragments[0].field, "printed_rules_text", "printedrules resolves");
+      const { results } = executeSearch(ast);
+      assert(results.length > 0, "printedrules:choose has results");
+      assert(results.every(r => r.printing && r.printing.printed_rules_text),
+        "printedrules: all results have printed_rules_text");
+    }
+
+    // errata presence search (matches card- or printing-level errata)
+    {
+      const { ast } = parseQuery("errata:yes");
+      assertEq(ast.groups[0].fragments[0].field, "errata", "errata keyword resolves");
+      const { results } = executeSearch(ast);
+      assert(results.length > 0, "errata:yes has results");
+      assert(results.every(r => r.card.errata || (r.printing && r.printing.errata)),
+        "errata:yes: all results have errata");
+    }
+    // errata note text search
+    {
+      const { ast } = parseQuery("errata:Doubt");
+      const { results } = executeSearch(ast);
+      assert(results.some(r => r.card.name === "Creativity"),
+        "errata:Doubt finds Creativity (card-level errata note)");
+    }
+    // no errata
+    {
+      const { ast } = parseQuery("errata:no");
+      const { results } = executeSearch(ast);
+      assert(results.length > 0, "errata:no has results");
+      assert(results.every(r => !r.card.errata && !(r.printing && r.printing.errata)),
+        "errata:no: no result has errata");
+    }
+
+    // summarize new keywords
+    {
+      const { ast } = parseQuery("headliner:yes errata:no");
+      const summary = summarizeQuery(ast);
+      assert(summary.toLowerCase().includes("is a headliner"), "summary describes headliner");
+      assert(summary.toLowerCase().includes("has no errata"), "summary describes no errata");
     }
 
     // Regex artist search

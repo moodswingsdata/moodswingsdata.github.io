@@ -79,7 +79,7 @@
     <h3>Special Values</h3>
     <ul>
       <li><strong>Dice notation:</strong> Brackets are optional. <code>d:5</code> is the same as <code>d:[5]</code>.</li>
-      <li><strong>~ in text searches:</strong> Stands for "this card's name". <code>rul:"~ is worth"</code> matches cards whose ruling text contains their own name followed by "is worth".</li>
+      <li><strong>~ in text searches:</strong> Stands for "this card's name". <code>note:"~ is worth"</code> matches cards whose notes contain their own name followed by "is worth".</li>
     </ul>
 
     <h2>Card Keywords</h2>
@@ -92,8 +92,10 @@
       <tr><td>dice_value</td><td>dval</td><td>Sum of primary dice pips (numeric)</td></tr>
       <tr><td>secondary_dice</td><td>dd, 2dice</td><td>Secondary dice notation</td></tr>
       <tr><td>secondary_dice_value</td><td>2val, 2dval, ddval</td><td>Sum of secondary dice pips (numeric)</td></tr>
-      <tr><td>rules</td><td>t</td><td>Rules text (HTML stripped for search)</td></tr>
-      <tr><td>rulings</td><td>rul</td><td>Rulings text</td></tr>
+      <tr><td>rules</td><td>t</td><td>Rules text, the canonical oracle text (HTML stripped for search)</td></tr>
+      <tr><td>notes</td><td>note, rulings, rul</td><td>Clarifying notes / rulings text</td></tr>
+      <tr><td>timing</td><td>tm</td><td>When the card applies: <code>in_play</code>, <code>after_playing</code>, or <code>to_play</code></td></tr>
+      <tr><td>errata</td><td>err</td><td>Whether the card or printing has errata. <code>errata:yes</code> finds corrected cards; a text value searches the errata note (e.g. <code>errata:Doubt</code>)</td></tr>
     </table>
 
     <h2>Printing Keywords</h2>
@@ -108,6 +110,8 @@
       <tr><td>set</td><td></td><td>Set code or edition name</td></tr>
       <tr><td>treatment</td><td>tr</td><td>Print treatment (Standard, Foil, etc.)</td></tr>
       <tr><td>artist</td><td>a</td><td>Artist name</td></tr>
+      <tr><td>headliner</td><td>hl</td><td>Editorial headliner flag. <code>headliner:yes</code> finds headliner printings</td></tr>
+      <tr><td>printedrules</td><td>printed, pt</td><td>As-printed rules text, when it differs from the oracle rules text</td></tr>
     </table>
 
     <h2>Formatting Results</h2>

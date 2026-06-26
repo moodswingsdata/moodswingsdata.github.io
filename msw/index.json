@@ -1,14 +1,18 @@
 {
+    "meta": {
+        "yaml": "/msw/meta.yaml",
+        "json": "/msw/meta.json"
+    },
     "cards": {
         "yaml": "/msw/cards.yaml",
-        "json": "/feelings/data/cards.json"
+        "json": "/msw/cards.json"
     },
     "printings": {
         "yaml": "/msw/printings.yaml",
-        "json": "/feelings/data/printings.json"
+        "json": "/msw/printings.json"
     },
     "editions": {
         "yaml": "/msw/editions.yaml",
-        "json": "/feelings/data/editions.json"
+        "json": "/msw/editions.json"
     }
 }
