@@ -88,8 +88,14 @@ const KEYWORD_MAP = {
   ddval: "secondary_dice_value",
   rules: "rules_text",
   t: "rules_text",
-  rulings: "rulings_text",
-  rul: "rulings_text",
+  notes: "notes",
+  note: "notes",
+  rulings: "notes",
+  rul: "notes",
+  timing: "timing",
+  tm: "timing",
+  errata: "errata",
+  err: "errata",
   frame: "frame",
   fr: "frame",
   reminder: "reminder_icon",
@@ -105,6 +111,11 @@ const KEYWORD_MAP = {
   tr: "treatment",
   artist: "artist",
   a: "artist",
+  headliner: "is_headliner",
+  hl: "is_headliner",
+  printedrules: "printed_rules_text",
+  printed: "printed_rules_text",
+  pt: "printed_rules_text",
   sort: "sort",
   as: "as",
 };
@@ -118,6 +129,8 @@ const PRINTING_FIELDS = new Set([
   "set",
   "treatment",
   "artist",
+  "is_headliner",
+  "printed_rules_text",
 ]);
 
 const NUMERIC_FIELDS = new Set([
@@ -375,7 +388,9 @@ const FIELD_LABELS = {
   secondary_dice: "secondary dice",
   secondary_dice_value: "secondary dice value",
   rules_text: "rules text",
-  rulings_text: "rulings text",
+  notes: "notes",
+  timing: "timing",
+  errata: "errata",
   frame: "frame",
   reminder_icon: "reminder icon",
   rarity: "rarity",
@@ -384,6 +399,8 @@ const FIELD_LABELS = {
   set: "set",
   treatment: "treatment",
   artist: "artist",
+  is_headliner: "headliner",
+  printed_rules_text: "printed rules text",
 };
 
 const AS_LABELS = {
@@ -404,6 +421,48 @@ const COLOR_LABELS = {
 
 const RARITY_ORDER = { common: 0, uncommon: 1, rare: 2, "mythic rare": 3 };
 const RARITY_NAMES = Object.keys(RARITY_ORDER);
+
+// Fields whose values are free text (quoted in summaries, "contains" matching).
+const TEXT_FIELDS = new Set([
+  "name",
+  "rules_text",
+  "notes",
+  "printed_rules_text",
+]);
+
+// Fields interpreted as booleans (presence/absence) in queries.
+const BOOLEAN_FIELDS = new Set(["is_headliner", "errata"]);
+
+const TRUE_VALUES = new Set(["", "true", "yes", "y", "1", "t"]);
+const FALSE_VALUES = new Set(["false", "no", "n", "0", "f"]);
+
+/**
+ * Interpret a query value as a boolean. An empty value means "true" (present).
+ * Returns true, false, or null when the value isn't a recognized boolean.
+ */
+function parseBooleanValue(value) {
+  const lower = (value || "").toLowerCase();
+  if (TRUE_VALUES.has(lower)) return true;
+  if (FALSE_VALUES.has(lower)) return false;
+  return null;
+}
+
+function describeBoolean(field, value, valueType, negated) {
+  const label = formatFieldLabel(field);
+  const bool = parseBooleanValue(value);
+  // For errata, a non-boolean value is treated as a text search of the note.
+  if (bool === null) {
+    const formattedValue = `"${value}"`;
+    return negated
+      ? `${label} note does not contain ${formattedValue}`
+      : `${label} note contains ${formattedValue}`;
+  }
+  const positive = negated ? !bool : bool;
+  if (field === "errata") {
+    return positive ? "has errata" : "has no errata";
+  }
+  return positive ? `is a ${label}` : `is not a ${label}`;
+}
 
 const RARITY_ALIASES = {
   c: "common",
@@ -446,7 +505,7 @@ function formatValue(field, value, valueType) {
   if (valueType === "regex") return `/${value}/`;
   if (field === "color") return normalizeColorLabel(value);
   if (field === "rarity") return normalizeRarityLabel(value);
-  if (field === "name" || field === "rules_text" || field === "rulings_text") {
+  if (TEXT_FIELDS.has(field)) {
     return `"${value}"`;
   }
   return value.toLowerCase();
@@ -482,7 +541,7 @@ function describeDirective(fragment) {
 
 function describeOperator(field, operator, value, valueType, negated) {
   const formattedValue = formatValue(field, value, valueType);
-  const textField = field === "name" || field === "rules_text" || field === "rulings_text" || field === "artist";
+  const textField = TEXT_FIELDS.has(field) || field === "artist" || field === "timing";
 
   if (valueType === "regex") {
     return negated ? `does not match ${formattedValue}` : `matches ${formattedValue}`;
@@ -515,6 +574,10 @@ function describeFragment(fragment) {
   }
   if (DIRECTIVE_FIELDS.has(fragment.field)) {
     return describeDirective(fragment);
+  }
+  // Boolean fields produce a complete clause (e.g. "is a headliner", "has errata").
+  if (BOOLEAN_FIELDS.has(fragment.field)) {
+    return describeBoolean(fragment.field, fragment.value, fragment.valueType, fragment.negated);
   }
   const label = formatFieldLabel(fragment.field);
   return `${label} ${describeOperator(fragment.field, fragment.operator, fragment.value, fragment.valueType, fragment.negated)}`;
@@ -588,4 +651,4 @@ export function summarizeQuery(ast) {
   return invalidDescription ? `${validDescription} ${invalidDescription}` : validDescription;
 }
 
-export { KEYWORD_MAP, PRINTING_FIELDS, NUMERIC_FIELDS, DIRECTIVE_FIELDS, RARITY_ALIASES, RARITY_NAMES, RARITY_ORDER, normalizeRarityLabel };
+export { KEYWORD_MAP, PRINTING_FIELDS, NUMERIC_FIELDS, DIRECTIVE_FIELDS, RARITY_ALIASES, RARITY_NAMES, RARITY_ORDER, normalizeRarityLabel, parseBooleanValue };

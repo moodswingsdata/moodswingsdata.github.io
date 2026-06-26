@@ -485,6 +485,36 @@ a:hover {
   margin-right: 0.5rem;
 }
 
+.popover-details .printed-rules {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: var(--bg);
+  border-radius: var(--radius);
+  border-left: 3px solid var(--accent);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.popover-details .printed-rules strong {
+  color: var(--text-muted);
+  margin-right: 0.35rem;
+}
+
+.popover-details .errata {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: var(--bg);
+  border-radius: var(--radius);
+  border-left: 3px solid var(--error);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.popover-details .errata strong {
+  color: var(--error);
+  margin-right: 0.35rem;
+}
+
 /* Responsive */
 @media (max-width: 600px) {
   .logo img {

@@ -4,7 +4,7 @@
  * Evaluates parsed query ASTs against loaded card and printing data.
  */
 
-import { PRINTING_FIELDS, NUMERIC_FIELDS, DIRECTIVE_FIELDS, RARITY_ORDER, normalizeRarityLabel } from "./parser.js";
+import { PRINTING_FIELDS, NUMERIC_FIELDS, DIRECTIVE_FIELDS, RARITY_ORDER, normalizeRarityLabel, parseBooleanValue } from "./parser.js";
 
 let cards = [];
 let printings = [];
@@ -35,8 +35,8 @@ export function initSearch(cardsData, printingsData, editionsData) {
     card._rules_text_plain = card.rules_text
       ? card.rules_text.replace(/<[^>]*>/g, "")
       : "";
-    card._rulings_text_plain = card.rulings_text
-      ? card.rulings_text.join(" ")
+    card._notes_plain = Array.isArray(card.notes)
+      ? card.notes.join(" ")
       : "";
   }
 
@@ -49,6 +49,10 @@ export function initSearch(cardsData, printingsData, editionsData) {
     printing._artist_str = Array.isArray(printing.artist)
       ? printing.artist.join(", ")
       : printing.artist || "";
+    // Pre-compute plain-text printed rules (HTML stripped), null when absent
+    printing._printed_rules_plain = printing.printed_rules_text
+      ? printing.printed_rules_text.replace(/<[^>]*>/g, "")
+      : "";
   }
 }
 
@@ -205,14 +209,32 @@ function matchesFilter(card, printing, filter, errors) {
     const searchValue = substituteCardName(value, card.name);
     return matchValue(card._rules_text_plain, operator, searchValue, valueType);
   }
-  if (field === "rulings_text") {
+  if (field === "notes") {
     const searchValue = substituteCardName(value, card.name);
-    if (!card.rulings_text || card.rulings_text.length === 0) {
+    if (!card.notes || card.notes.length === 0) {
       return value === "" || value === null;
     }
-    return card.rulings_text.some((ruling) =>
-      matchValue(ruling, operator, searchValue, valueType)
+    return card.notes.some((note) =>
+      matchValue(note, operator, searchValue, valueType)
     );
+  }
+  if (field === "timing") {
+    const timing = card.timing || [];
+    if (value === "" || value === null) {
+      return timing.length === 0;
+    }
+    if (valueType === "regex") {
+      return timing.some((t) => matchValue(t, operator, value, valueType));
+    }
+    // Match against canonical tokens; also accept space-for-underscore (e.g. "in play")
+    const normalized = value.toLowerCase().replace(/\s+/g, "_");
+    return timing.some((t) => {
+      const lower = t.toLowerCase();
+      return operator === "=" ? lower === normalized : lower.includes(normalized);
+    });
+  }
+  if (field === "errata") {
+    return matchErrata(card.errata, printing ? printing.errata : null, operator, value, valueType);
   }
 
   // Printing fields (need a printing to match)
@@ -250,8 +272,46 @@ function matchesFilter(card, printing, filter, errors) {
   if (field === "artist") {
     return matchValue(printing._artist_str, operator, value, valueType);
   }
+  if (field === "is_headliner") {
+    return matchBoolean(printing.is_headliner, value);
+  }
+  if (field === "printed_rules_text") {
+    if (value === "" || value === null) {
+      return !printing.printed_rules_text;
+    }
+    const searchValue = substituteCardName(value, card.name);
+    return matchValue(printing._printed_rules_plain, operator, searchValue, valueType);
+  }
 
   return false;
+}
+
+/**
+ * Match a boolean field against a query value (true/yes/1, false/no/0, or empty=present).
+ */
+function matchBoolean(fieldValue, queryValue) {
+  const want = parseBooleanValue(queryValue);
+  if (want === null) return false;
+  return Boolean(fieldValue) === want;
+}
+
+/**
+ * Match the combined errata of a card and printing against a query.
+ * A boolean/empty value tests presence (errata on the card OR its printing);
+ * any other value searches the errata notes and field names of both.
+ */
+function matchErrata(cardErrata, printingErrata, operator, value, valueType) {
+  const present = !!(cardErrata || printingErrata);
+  const bool = parseBooleanValue(value);
+  if (bool !== null) {
+    return present === bool;
+  }
+  if (!present) return false;
+  const parts = [];
+  for (const e of [cardErrata, printingErrata]) {
+    if (e) parts.push(e.note || "", ...(e.fields || []));
+  }
+  return matchValue(parts.join(" "), operator, value, valueType);
 }
 
 const COLOR_SHORTHAND = {

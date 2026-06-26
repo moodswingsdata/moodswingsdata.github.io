@@ -8,10 +8,11 @@ This site is like mtgjson but for Mark Rosewater's game [Mood Swings](https://ma
 
 ## Available data
 
+- Meta info (like schema version): [meta.yaml](/msw/meta.yaml) • [meta.json](/msw/meta.json)
 - Editions: [editions.yaml](/msw/editions.yaml) • [editions.json](/msw/editions.json)
-- Cards: [cards.yaml](/msw/cards.yaml) • [cards.json](/feelings/data/cards.json)
+- Cards: [cards.yaml](/msw/cards.yaml) • [cards.json](/msw/cards.json)
 - Printings:
-  - Edition 1 (MSW) [printings.yaml](/msw/printings.yaml) • [printings.json](/feelings/data/printings.json)
+  - Edition 1 (MSW) [printings.yaml](/msw/printings.yaml) • [printings.json](/msw/printings.json)
 
 ## Caveats
 

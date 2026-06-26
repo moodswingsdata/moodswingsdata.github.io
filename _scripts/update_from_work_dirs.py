@@ -20,7 +20,8 @@ FEELINGS_REPO_DIR = (CONTAINING_DIR / FEELINGS_DIR_NAME).resolve()
 FEELINGS_SRC_DIR = FEELINGS_REPO_DIR / 'feelings'
 PIPELINE_REPO_DIR = (CONTAINING_DIR / PIPELINE_DIR_NAME).resolve()
 PIPELINE_OUTPUTS_DIR = PIPELINE_REPO_DIR / 'out'
-YAML_FILES = ['editions.yaml', 'cards.yaml', 'printings.yaml']
+# meta.json appears under "YAML_FILES" so that it's not compared with files in Feelings
+YAML_FILES = ['editions.yaml', 'cards.yaml', 'printings.yaml', 'meta.yaml', 'meta.json']
 JSON_FILES = ['editions.json', 'cards.json', 'printings.json']
 
 FEELINGS_TARGET_DIR = THIS_REPO_DIR / 'feelings'
@@ -86,6 +87,11 @@ print("Copying YAML data")
 for yaml in YAML_FILES:
     print(f"- {yaml}")
     (PIPELINE_OUTPUTS_DIR / yaml).copy(EDITION1_TARGET_DIR / yaml)
+
+print("Copying JSON data")
+for json in JSON_FILES:
+    print(f"- {json}")
+    (PIPELINE_OUTPUTS_DIR / json).copy(EDITION1_TARGET_DIR / json)
 
 print("Copying Feelings")
 with tempfile.TemporaryDirectory() as tmpdir:
