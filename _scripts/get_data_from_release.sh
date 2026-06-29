@@ -12,5 +12,5 @@ tagname=$(gh release list -R moodswingsdata/moodswingsdatapipeline -L 1 --json t
 
 # mention the tag and download the assets
 printf "fetching assets for tag: $tagname\n"
-$(cd "$datadir" ; gh release download "$tagname" --clobber -R moodswingsdata/moodswingsdatapipeline -p '*.json')
+$(cd "$datadir" ; gh release download "$tagname" --clobber -R moodswingsdata/moodswingsdatapipeline -p '*.json' -p '*.yaml')
 printf "You have to commit this yourself.\n"
