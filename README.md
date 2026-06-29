@@ -4,7 +4,11 @@ This site is like mtgjson but for Mark Rosewater's game [Mood Swings](https://ma
 
 ## Search engine
 
-[Feelings](/feelings) is a search engine for Mood Swings cards built on this data.
+We recommend [Moodiest](https://moodiest.app/), the premier Mood Swings search engine.
+It's powered by this data and works a lot like Scryfall.
+
+There is also [Feelings](/feelings), a client-side search engine used as a proof-of-concept for the data pipeline.
+But really, just use Moodiest.
 
 ## Available data
 
@@ -14,13 +18,13 @@ This site is like mtgjson but for Mark Rosewater's game [Mood Swings](https://ma
 - Printings:
   - Edition 1 (MSW) [printings.yaml](/msw/printings.yaml) • [printings.json](/msw/printings.json)
 
-## Caveats
-
-This is a very early work in progress. We're still figuring out the right data shapes and API contracts to support.
-
 ## Data pipeline
 
 The [data pipeline for this content](https://github.com/moodswingsdata/moodswingsdatapipeline) uses publicly available data and some human curation to generate these files.
+
+### Data/schema versioning
+
+See the [changelog](https://github.com/moodswingsdata/moodswingsdatapipeline/blob/main/CHANGELOG.md) for schema version changes. Data can be fetched from [releases](https://github.com/moodswingsdata/moodswingsdatapipeline/releases), where the tag is `v<schema>/<release_date>`.
 
 ## Fan content
 
